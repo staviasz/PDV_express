@@ -10,7 +10,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "dev": "node --watch src/index",
-    "start": "npx knex migrate:latest; npx knex seed:run; node ./src/index.js"
+    "start": "node ./src/index.js"
   },
   "keywords": [],
   "author": "",

@@ -1,22 +1,15 @@
-const { emailValidator } = require('./email');
-const { nameValidator } = require('./name');
-const { passwordValidator } = require('./password');
+const schemaUser = require('../schemas/schemaUser');
+const validateSchema = require('./validateSchema');
 
-const isValid = async (name, email, password, database) => {
-  const { valid: validName, message: messageName } = await nameValidator(name);
-  if (!validName) return { valid: validName, message: messageName };
+const validateUser = async (database, objectValues) => {
+  const errorSchema = await validateSchema(schemaUser)(objectValues);
+  if (errorSchema) return errorSchema;
 
-  const { valid: validEmail, message: messageEmail } = await emailValidator(
-    email,
-    database,
-  );
-  if (!validEmail) return { valid: validEmail, message: messageEmail };
+  const { email } = objectValues;
+  const emailExists = await database('usuarios').where({ email }).first();
+  if (emailExists) return 'Email já cadastrado';
 
-  const { valid: validPassword, message: messagePassword } =
-    await passwordValidator(password);
-  if (!validPassword) return { valid: validPassword, message: messagePassword };
-
-  return { valid: true };
+  return;
 };
 
-module.exports = { isValid };
+module.exports = validateUser;

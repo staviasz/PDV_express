@@ -7,7 +7,7 @@ const routes = Router();
 
 routes.post('/usuario', users.createUser);
 
-routes.put('/login', users.login);
+routes.post('/login', users.login);
 
 routes.use(verifyLogin);
 

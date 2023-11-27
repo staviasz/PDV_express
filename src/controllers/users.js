@@ -47,7 +47,7 @@ const login = async (req, res) => {
   try {
     await requestLogin.validateAsync(req.body);
   } catch (error) {
-    return await res.status(400).json({ mensagem: error.message });
+    return errorResponse400(res, error.message);
   }
 
   try {

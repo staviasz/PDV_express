@@ -19,6 +19,7 @@ const schemaUser = Joi.object({
   }),
 
   password: Joi.string().min(5).max(25).required().messages({
+    'any.required': 'O campo senha é obrigatório',
     'string.min': 'A senha deve conter entre 5 e 25 caracteres',
     'string.max': 'A senha deve conter entre 5 e 25 caracteres',
   }),

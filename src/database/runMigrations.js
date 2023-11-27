@@ -7,6 +7,7 @@ const runMigrations = async () => {
   try {
     await database.migrate.latest();
   } catch (error) {
+    console.log(error);
     throw new Error('database connction failure');
   } finally {
     await database.destroy();

@@ -17,5 +17,7 @@
         "prettier",
         "jest"
     ],
-    "rules": {}
+    "rules": {
+        "no-unused-vars": "warn"
+    }
 }

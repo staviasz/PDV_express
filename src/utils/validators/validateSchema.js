@@ -1,7 +1,7 @@
-const validateSchema = (schema) => async (objectValues) => {
+const validateSchema = (schema) => async (schemaValues) => {
   try {
-    console.log(objectValues);
-    await schema.validateAsync(objectValues);
+    console.log('objectValues', schemaValues);
+    await schema.validateAsync(schemaValues);
     return;
   } catch (error) {
     console.log(error);

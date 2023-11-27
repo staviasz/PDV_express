@@ -30,7 +30,6 @@ const createUser = async (req, res) => {
     const { senha, ...user } = newUser[0];
     return successRes.successResponse201(res, user);
   } catch (error) {
-    console.log(error);
     return errorRes.errorResponse500(res, error.message);
   }
 };
@@ -56,7 +55,6 @@ const updateUser = async (req, res) => {
     const { senha, ...user } = newUser[0];
     return successRes.successResponse201(res, user);
   } catch (error) {
-    console.log(error);
     return errorRes.errorResponse500(res, error.message);
   }
 };

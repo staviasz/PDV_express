@@ -30,7 +30,31 @@ const createUser = async (req, res) => {
     const { senha, ...user } = newUser[0];
     return successRes.successResponse201(res, user);
   } catch (error) {
-    console.log(error);
+    return errorRes.errorResponse500(res, error.message);
+  }
+};
+
+const updateUser = async (req, res) => {
+  const { nome: name, email, senha: password } = req.body;
+  const { id } = req.user;
+
+  try {
+    const messageError = await validateUser(
+      knex,
+      { name, email, password },
+      id,
+    );
+    if (messageError) return errorRes.errorResponse404(res, messageError);
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await knex('usuarios')
+      .where({ id })
+      .update({ nome: name, email, senha: hashedPassword }, '*');
+
+    // eslint-disable-next-line no-unused-vars
+    const { senha, ...user } = newUser[0];
+    return successRes.successResponse201(res, user);
+  } catch (error) {
     return errorRes.errorResponse500(res, error.message);
   }
 };
@@ -66,5 +90,6 @@ const login = async (req, res) => {
 
 module.exports = {
   createUser,
+  updateUser,
   login,
 };

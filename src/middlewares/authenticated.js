@@ -30,7 +30,7 @@ const verifyLogin = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return error.errorResponse401(res, 'Usuario não autorizado');
+    return errorRes.errorResponse401(res, 'Usuario Não autorizado');
   }
 };
 

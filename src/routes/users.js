@@ -10,5 +10,6 @@ routes.post('/login', users.login);
 
 routes.use(verifyLogin);
 routes.put('/usuario', users.updateUser);
+routes.get('/usuario', users.detailsUser);
 
 module.exports = routes;

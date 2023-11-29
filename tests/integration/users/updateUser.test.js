@@ -51,7 +51,7 @@ describe('Update users', () => {
 
   it('should minimum 3 caracteres in the field name', async () => {
     const response = await routeTest({
-      nome: 'aa',
+      nome: 'a ',
       email: 'teste@teste.com',
       senha: '12345',
     });

@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const schemaUser = Joi.object({
   name: Joi.string()
-    .regex(/^[a-zA-ZÀ-ÿs-]+$/)
+    .regex(/^[a-zA-ZÀ-ÿs-\s]+$/)
     .min(3)
     .required()
     .messages({

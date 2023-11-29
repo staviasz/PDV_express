@@ -9,7 +9,12 @@ const { execSync } = require('child_process');
 const testServer = supertest(server);
 
 beforeAll(async () => {
-  execSync('NODE_ENV=test npx knex migrate:latest');
+  execSync('npx knex migrate:latest', {
+    env: {
+      ...process.env,
+      NODE_ENV: 'test',
+    },
+  });
   const hashedPassword = await bcrypt.hash('123456789', 10);
   await knex('usuarios').insert({
     nome: 'testeJest',
@@ -29,7 +34,12 @@ afterAll(async () => {
   } catch (error) {
     console.error('Error during deletion:', error);
   }
-  execSync('NODE_ENV=test npx knex migrate:rollback');
+  execSync('npx knex migrate:rollback', {
+    env: {
+      ...process.env,
+      NODE_ENV: 'test',
+    },
+  });
   await knex.destroy();
 });
 

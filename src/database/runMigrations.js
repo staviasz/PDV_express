@@ -1,15 +1,14 @@
-const knex = require('knex');
 const dbConfig = require('../../knexfile');
+const environment = process.env.NODE_ENV || 'development';
+const knex = require('knex')(dbConfig[environment]);
 
 const runMigrations = async () => {
-  const database = knex(dbConfig);
-
   try {
-    await database.migrate.latest();
+    await knex.migrate.latest();
   } catch (error) {
     throw new Error('database connction failure');
   } finally {
-    await database.destroy();
+    await knex.destroy();
   }
 };
 

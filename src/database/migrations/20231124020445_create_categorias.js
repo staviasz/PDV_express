@@ -3,10 +3,14 @@
  * @returns { Promise<void> }
  */
 exports.up = async function (knex) {
-  await knex.schema.createTableIfNotExists('categorias', (table) => {
-    table.increments('id').primary();
-    table.string('descricao').notNullable();
-  });
+  const tableExists = await knex.schema.hasTable('categorias');
+
+  if (!tableExists) {
+    return knex.schema.createTable('categorias', (table) => {
+      table.increments('id').primary();
+      table.string('descricao').notNullable();
+    });
+  }
 };
 
 /**

@@ -3,7 +3,7 @@ const Joi = require('joi');
 const schemaUser = Joi.object({
   name: Joi.string()
     .min(3)
-    .regex(/^[a-zA-ZÀ-ÖØ-öø-ÿ]+$/)
+    .regex(/^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/)
     .required()
     .messages({
       'any.required': 'O campo nome é obrigatório',
@@ -19,6 +19,7 @@ const schemaUser = Joi.object({
   }),
 
   password: Joi.string().min(5).max(25).required().messages({
+    'string.empty': 'O campo senha é obrigatório',
     'any.required': 'O campo senha é obrigatório',
     'string.min': 'A senha deve conter entre 5 e 25 caracteres',
     'string.max': 'A senha deve conter entre 5 e 25 caracteres',

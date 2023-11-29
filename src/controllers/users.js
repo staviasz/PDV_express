@@ -61,6 +61,19 @@ const updateUser = async (req, res) => {
   }
 };
 
+const detailsUser = async (req, res) => {
+  try {
+    const user = await knex('usuarios')
+      .select('id', 'nome', 'email')
+      .where({ id: req.user.id })
+      .first()
+
+    return successRes.successResponse200(res, user)
+  } catch (error) {
+    return errorRes.errorResponse500(res, error.message);
+  }
+};
+
 const login = async (req, res) => {
   const { email, senha: password } = req.body;
 
@@ -93,5 +106,6 @@ const login = async (req, res) => {
 module.exports = {
   createUser,
   updateUser,
+  detailsUser,
   login,
 };

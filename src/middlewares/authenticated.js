@@ -1,14 +1,16 @@
 require('dotenv').config();
 
 const jwt = require('jsonwebtoken');
-const db = require('knex')(require('../../knexfile'));
+const dbConfig = require('../../knexfile');
+const environment = process.env.NODE_ENV || 'development';
+const knex = require('knex')(dbConfig[environment]);
 const errorRes = require('../utils/responses/errorResponse');
 
 const verifyLogin = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return errorRes.errorResponse401(res, 'Usuario Não autorizado');
+    return errorRes.errorResponse401(res, 'Usuario não autorizado');
   }
 
   try {
@@ -16,7 +18,7 @@ const verifyLogin = async (req, res, next) => {
 
     const { id } = jwt.verify(token, process.env.SECRET_JWT);
 
-    const dataUser = await db('usuarios').where({ id }).first();
+    const dataUser = await knex('usuarios').where({ id }).first();
     if (!dataUser) {
       return errorRes.errorResponse404(res, 'Usuario não encontrado');
     }
@@ -28,7 +30,7 @@ const verifyLogin = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return error.errorResponse401(res, 'Usuario Não autorizado');
+    return error.errorResponse401(res, 'Usuario não autorizado');
   }
 };
 

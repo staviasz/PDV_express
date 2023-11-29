@@ -2,7 +2,9 @@ require('dotenv').config();
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const knex = require('knex')(require('../../knexfile'));
+const dbConfig = require('../../knexfile');
+const environment = process.env.NODE_ENV || 'development';
+const knex = require('knex')(dbConfig[environment]);
 
 const errorRes = require('../utils/responses/errorResponse');
 const successRes = require('../utils/responses/successResponse');
@@ -53,7 +55,7 @@ const updateUser = async (req, res) => {
 
     // eslint-disable-next-line no-unused-vars
     const { senha, ...user } = newUser[0];
-    return successRes.successResponse201(res, user);
+    return successRes.successResponse200(res, user);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);
   }

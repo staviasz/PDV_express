@@ -45,7 +45,7 @@ describe('Create users', () => {
 
   it('should minimum 3 caracteres in the field name', async () => {
     const response = await routeTest({
-      nome: '12',
+      nome: 'aÃ',
       email: 'teste@teste.com',
       senha: '12345',
     });
@@ -53,6 +53,19 @@ describe('Create users', () => {
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
       mensagem: 'O nome deve conter no minimo 3 caracteres',
+    });
+  });
+
+  it('should not caractere numeric in the field name', async () => {
+    const response = await routeTest({
+      nome: '12',
+      email: 'teste@teste.com',
+      senha: '12345',
+    });
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({
+      mensagem: 'O nome não deve conter numeros',
     });
   });
 

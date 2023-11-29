@@ -4,7 +4,7 @@ const routeTest = async (body) => {
   return testServer.post('/login').send(body);
 };
 
-describe('Create users', () => {
+describe('Login users', () => {
   it('should not correct email format', async () => {
     const response = await routeTest({
       nome: 'teste',

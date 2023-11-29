@@ -66,9 +66,9 @@ const detailsUser = async (req, res) => {
     const user = await knex('usuarios')
       .select('id', 'nome', 'email')
       .where({ id: req.user.id })
-      .first()
+      .first();
 
-    return successRes.successResponse200(res, user)
+    return successRes.successResponse200(res, user);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);
   }

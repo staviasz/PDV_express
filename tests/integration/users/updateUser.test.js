@@ -10,7 +10,7 @@ const routeTest = async (body) => {
     .send(body);
 };
 
-describe('Create users', () => {
+describe('Update users', () => {
   it('should is required field name', async () => {
     const response = await routeTest({
       email: 'teste@teste.com',

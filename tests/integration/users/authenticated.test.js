@@ -13,7 +13,7 @@ const routeTest = async (body) => {
     .send(body);
 };
 
-describe('Create users', () => {
+describe('Authenticated users', () => {
   it('should user unauthorized', async () => {
     const response = await testServer.put('/usuario').send({});
 

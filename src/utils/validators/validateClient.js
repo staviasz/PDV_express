@@ -1,19 +1,22 @@
 const schemaClient = require('../schemas/schemaClient');
 const validateSchema = require('./validateSchema');
-const { cpf: CPF } = require('cpf-cnpj-validator');
 
 const validateClient = async (database, schemaValues, id = null) => {
   const errorSchema = await validateSchema(schemaClient)(schemaValues);
   if (errorSchema) {
     return errorSchema;
   }
-
   const { cpf, email } = schemaValues;
 
-  if (!CPF.format(cpf)) {
-    return 'CPF inválido';
+  if (id != null) {
+    if (!Number(id)) {
+      return 'O id precisa ser um número';
+    }
+    const client = await database('clientes').where({ id }).first();
+    if (!client) {
+      return 'Cliente não encontrado';
+    }
   }
-
   const emailExists = await database('clientes')
     .where({ email })
     .whereNot({ id })

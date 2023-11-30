@@ -8,5 +8,6 @@ const routes = Router();
 routes.use(verifyLogin);
 
 routes.post('/cliente', clients.registerClient);
+routes.put('/cliente/:id', clients.updateClient);
 
 module.exports = routes;

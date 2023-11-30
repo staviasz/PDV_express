@@ -20,10 +20,16 @@ const schemaClient = Joi.object({
     'string.base': 'O email não deve conter numeros',
   }),
 
-  cpf: Joi.string().required().messages({
-    'any.required': 'O campo cpf é obrigatório',
-    'string.empty': 'O campo cpf é obrigatório',
-  }),
+  cpf: Joi.string()
+    .required()
+    .length(11)
+    .pattern(/^\d+$/) // Garante que contenha apenas números
+    .messages({
+      'any.required': 'O campo CPF é obrigatório',
+      'string.empty': 'O campo CPF é obrigatório',
+      'string.length': 'O CPF deve ter exatamente 11 dígitos',
+      'string.pattern.base': 'O CPF deve conter apenas números',
+    }),
 });
 
 module.exports = schemaClient;

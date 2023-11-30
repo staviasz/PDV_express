@@ -11,7 +11,6 @@ const validateUser = async (database, schemaValues, id = null) => {
     .whereNot({ id })
     .first();
   if (emailExists) return 'Email já cadastrado';
-
   return;
 };
 

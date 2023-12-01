@@ -13,7 +13,7 @@ const registerClient = async (req, res) => {
     const messageError = await validateClient(knex, { name, email, cpf });
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
-    const newClient = await knex('clientes').insert(
+    const [newClient] = await knex('clientes').insert(
       {
         nome: name,
         email,
@@ -22,7 +22,7 @@ const registerClient = async (req, res) => {
       '*',
     );
 
-    return successRes.successResponse201(res, newClient[0]);
+    return successRes.successResponse201(res, newClient);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);
   }
@@ -36,7 +36,7 @@ const updateClient = async (req, res) => {
     const messageError = await validateClient(knex, { name, email, cpf }, id);
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
-    const newClient = await knex('clientes').where({ id }).update(
+    const [newClient] = await knex('clientes').where({ id }).update(
       {
         nome: name,
         email,
@@ -45,10 +45,20 @@ const updateClient = async (req, res) => {
       '*',
     );
 
-    return successRes.successResponse200(res, newClient[0]);
+    return successRes.successResponse200(res, newClient);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);
   }
 };
 
-module.exports = { registerClient, updateClient };
+const getClient = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const client = await knex('clientes').where({ id }).first();
+    return successRes.successResponse200(res, client);
+  } catch (error) {
+    return errorRes.errorResponse500(res, error.message);
+  }
+};
+
+module.exports = { registerClient, updateClient, getClient };

@@ -22,6 +22,7 @@ beforeAll(async () => {
     email: 'teste@jest.com',
     senha: hashedPassword,
   };
+
   const categoryMock = [
     { descricao: 'Informática' },
     { descricao: 'Celulares' },
@@ -29,9 +30,35 @@ beforeAll(async () => {
     { descricao: 'Mercado' },
   ];
 
+  const clientsMock = [
+    {
+      nome: 'clienteUm',
+      email: 'clente4@gmail.com',
+      cpf: '53751122052',
+      cep: '11662730',
+      rua: 'Rua Álvaro de Azevedo',
+      numero: '123',
+      bairro: 'Martim de Sá',
+      cidade: 'Caraguatatuba',
+      estado: 'SP',
+    },
+    {
+      nome: 'clienteDois',
+      email: 'clente5@gmail.com',
+      cpf: '19420812006',
+      cep: '69314416',
+      rua: 'Rua Sião',
+      numero: '1234',
+      bairro: 'Nova Canaã',
+      cidade: 'Boa Vista',
+      estado: 'RR',
+    },
+  ];
+
   const queries = [
     knex('usuarios').insert(userMock),
     knex('categorias').insert(categoryMock),
+    knex('clientes').insert(clientsMock),
   ];
 
   await Promise.all(queries);
@@ -40,8 +67,11 @@ beforeAll(async () => {
     email: 'teste@jest.com',
     senha: '123456789',
   });
+
   global.token = `Bearer ${response.body.token}`;
   global.categories = categoryMock;
+  global.user = userMock;
+  global.clients = clientsMock;
 });
 
 afterAll(async () => {

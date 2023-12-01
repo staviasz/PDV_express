@@ -9,5 +9,6 @@ routes.use(verifyLogin);
 
 routes.post('/cliente', clients.registerClient);
 routes.put('/cliente/:id', clients.updateClient);
+routes.get('/cliente/:id', clients.getClient);
 
 module.exports = routes;

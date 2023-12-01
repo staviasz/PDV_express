@@ -41,7 +41,7 @@ const createProduct = async (req, res) => {
       '*',
     );
 
-    successRes.successResponse200(res, product);
+    return successRes.successResponse200(res, product);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);
   }

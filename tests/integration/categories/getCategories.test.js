@@ -5,7 +5,7 @@ const routeTest = async (body) => {
 };
 
 describe('Categories', () => {
-  it('should is required field name', async () => {
+  it('should list categories', async () => {
     const response = await routeTest({});
 
     expect(response.statusCode).toBe(200);

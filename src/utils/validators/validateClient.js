@@ -9,6 +9,7 @@ const validateClient = async (database, schemaValues, id = null) => {
   const { cpf, email } = schemaValues;
 
   if (id != null) {
+    // o id vai ser validado pelo proprio db e retornar no bloco catch
     if (!Number(id)) {
       return 'O id precisa ser um número';
     }

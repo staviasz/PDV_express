@@ -28,4 +28,27 @@ const registerClient = async (req, res) => {
   }
 };
 
-module.exports = { registerClient };
+const updateClient = async (req, res) => {
+  const { nome: name, email, cpf } = req.body;
+  const { id } = req.params;
+
+  try {
+    const messageError = await validateClient(knex, { name, email, cpf }, id);
+    if (messageError) return errorRes.errorResponse400(res, messageError);
+
+    const newClient = await knex('clientes').where({ id }).update(
+      {
+        nome: name,
+        email,
+        cpf,
+      },
+      '*',
+    );
+
+    return successRes.successResponse200(res, newClient[0]);
+  } catch (error) {
+    return errorRes.errorResponse500(res, error.message);
+  }
+};
+
+module.exports = { registerClient, updateClient };

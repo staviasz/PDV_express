@@ -11,7 +11,7 @@ const registerClient = async (req, res) => {
 
   try {
     const messageError = await validateClient(knex, { name, email, cpf });
-    if (messageError) return errorRes.errorResponse404(res, messageError);
+    if (messageError) return errorRes.errorResponse400(res, messageError);
 
     const newClient = await knex('clientes').insert(
       {
@@ -34,7 +34,7 @@ const updateClient = async (req, res) => {
 
   try {
     const messageError = await validateClient(knex, { name, email, cpf }, id);
-    if (messageError) return errorRes.errorResponse404(res, messageError);
+    if (messageError) return errorRes.errorResponse400(res, messageError);
 
     const newClient = await knex('clientes').where({ id }).update(
       {
@@ -45,7 +45,7 @@ const updateClient = async (req, res) => {
       '*',
     );
 
-    return successRes.successResponse201(res, newClient[0]);
+    return successRes.successResponse200(res, newClient[0]);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);
   }

@@ -120,6 +120,35 @@ describe('Categories', () => {
     });
   });
 
+  it('should is a positive number field amount', async () => {
+    const response = await routeTest({
+      descricao: 'produto1',
+      quantidade_estoque: -5,
+      valor: 100,
+      categoria_id: 0,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: 'O campo quantidade de estoque não permite numeros negativo',
+    });
+  });
+
+  it('should not is a float number field amount', async () => {
+    const response = await routeTest({
+      descricao: 'produto1',
+      quantidade_estoque: 5.5,
+      valor: 100,
+      categoria_id: 0,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem:
+        'O campo quantidade de estoque não permite numeros com ponto flotuante',
+    });
+  });
+
   it('should is required field value', async () => {
     const response = await routeTest({
       descricao: 'produto1',
@@ -144,6 +173,63 @@ describe('Categories', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
       mensagem: 'A valor deve conter apenas numeros',
+    });
+  });
+
+  it('should is a positive number field value', async () => {
+    const response = await routeTest({
+      descricao: 'produto1',
+      quantidade_estoque: 5,
+      valor: -100,
+      categoria_id: 0,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: 'O campo valor não permite numeros negativo',
+    });
+  });
+
+  it('should not is a float number field value', async () => {
+    const response = await routeTest({
+      descricao: 'produto1',
+      quantidade_estoque: 5,
+      valor: 100.5,
+      categoria_id: 0,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem:
+        'O campo valor não permite numeros com ponto flotuante, digite o valor em centavos',
+    });
+  });
+
+  it('should is a positive number field category_id', async () => {
+    const response = await routeTest({
+      descricao: 'produto1',
+      quantidade_estoque: 5,
+      valor: 100,
+      categoria_id: 0,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: 'O campo categoria_id não permite numeros negativo',
+    });
+  });
+
+  it('should not is a float number field category_id', async () => {
+    const response = await routeTest({
+      descricao: 'produto1',
+      quantidade_estoque: 5,
+      valor: 100,
+      categoria_id: 0.5,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: 'O campo categoria_id não permite numeros com ponto flotuante',
     });
   });
 
@@ -179,7 +265,7 @@ describe('Categories', () => {
       descricao: 'produto1',
       quantidade_estoque: 100,
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 50,
     });
 
     expect(response.statusCode).toBe(400);

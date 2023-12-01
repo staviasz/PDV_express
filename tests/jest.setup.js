@@ -22,6 +22,7 @@ beforeAll(async () => {
     email: 'teste@jest.com',
     senha: hashedPassword,
   };
+
   const categoryMock = [
     { descricao: 'Informática' },
     { descricao: 'Celulares' },
@@ -29,31 +30,35 @@ beforeAll(async () => {
     { descricao: 'Mercado' },
   ];
 
-  const productsMock = [
+  const clientsMock = [
     {
-      descricao: 'productJest',
-      quantidade_estoque: 10,
-      valor: 100,
-      categoria_id: 3,
+      nome: 'clienteUm',
+      email: 'clente4@gmail.com',
+      cpf: '53751122052',
+      cep: '11662730',
+      rua: 'Rua Álvaro de Azevedo',
+      numero: '123',
+      bairro: 'Martim de Sá',
+      cidade: 'Caraguatatuba',
+      estado: 'SP',
     },
     {
-      descricao: 'productJest2',
-      quantidade_estoque: 11,
-      valor: 100,
-      categoria_id: 2,
-    },
-    {
-      descricao: 'productJest3',
-      quantidade_estoque: 12,
-      valor: 100,
-      categoria_id: 2,
+      nome: 'clienteDois',
+      email: 'clente5@gmail.com',
+      cpf: '19420812006',
+      cep: '69314416',
+      rua: 'Rua Sião',
+      numero: '1234',
+      bairro: 'Nova Canaã',
+      cidade: 'Boa Vista',
+      estado: 'RR',
     },
   ];
 
-  await knex('categorias').insert(categoryMock);
   const queries = [
     knex('usuarios').insert(userMock),
-    knex('produtos').insert(productsMock),
+    knex('categorias').insert(categoryMock),
+    knex('clientes').insert(clientsMock),
   ];
 
   await Promise.all(queries);
@@ -62,9 +67,10 @@ beforeAll(async () => {
     email: 'teste@jest.com',
     senha: '123456789',
   });
+
   global.token = `Bearer ${response.body.token}`;
   global.categories = categoryMock;
-  global.products = productsMock;
+  global.clients = clientsMock;
   global.user = userMock;
 });
 

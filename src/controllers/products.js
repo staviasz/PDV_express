@@ -41,7 +41,7 @@ const createProduct = async (req, res) => {
       '*',
     );
 
-    successRes.successResponse200(res, product);
+    return successRes.successResponse201(res, product);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);
   }
@@ -49,9 +49,7 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
-  if (!id) {
-    return errorRes.errorResponse400(res, 'Parametro id é obrigatorio ');
-  }
+
   const {
     descricao: description,
     quantidade_estoque: amount,
@@ -87,7 +85,7 @@ const updateProduct = async (req, res) => {
       )
       .where({ id });
 
-    successRes.successResponse200(res, product);
+    return successRes.successResponse200(res, product);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);
   }

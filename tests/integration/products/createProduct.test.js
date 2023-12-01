@@ -286,7 +286,7 @@ describe('Categories', () => {
     mockProduct[0].id = 4;
 
     const response = await routeTest(mockProduct[0]);
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(201);
     expect(response.body).toEqual(mockProduct);
   });
 });

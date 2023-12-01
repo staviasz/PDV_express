@@ -1,4 +1,7 @@
 const testServer = require('../../jest.setup');
+const dbConfig = require('../../../knexfile');
+const environment = process.env.NODE_ENV || 'development';
+const knex = require('knex')(dbConfig[environment]);
 
 const routeTest = async (body) => {
   return testServer
@@ -8,6 +11,30 @@ const routeTest = async (body) => {
     })
     .send(body);
 };
+
+beforeAll(async () => {
+  const productsMock = [
+    {
+      descricao: 'productJest',
+      quantidade_estoque: 10,
+      valor: 100,
+      categoria_id: 3,
+    },
+    {
+      descricao: 'productJest2',
+      quantidade_estoque: 11,
+      valor: 100,
+      categoria_id: 2,
+    },
+    {
+      descricao: 'productJest3',
+      quantidade_estoque: 12,
+      valor: 100,
+      categoria_id: 2,
+    },
+  ];
+  await knex('produtos').insert(productsMock);
+});
 
 describe('Update products', () => {
   it('should is authorized', async () => {

@@ -29,32 +29,8 @@ beforeAll(async () => {
     { descricao: 'Mercado' },
   ];
 
-  const productsMock = [
-    {
-      descricao: 'productJest',
-      quantidade_estoque: 10,
-      valor: 100,
-      categoria_id: 3,
-    },
-    {
-      descricao: 'productJest2',
-      quantidade_estoque: 11,
-      valor: 100,
-      categoria_id: 2,
-    },
-    {
-      descricao: 'productJest3',
-      quantidade_estoque: 12,
-      valor: 100,
-      categoria_id: 2,
-    },
-  ];
-
   await knex('categorias').insert(categoryMock);
-  const queries = [
-    knex('usuarios').insert(userMock),
-    knex('produtos').insert(productsMock),
-  ];
+  const queries = [knex('usuarios').insert(userMock)];
 
   await Promise.all(queries);
 
@@ -64,7 +40,7 @@ beforeAll(async () => {
   });
   global.token = `Bearer ${response.body.token}`;
   global.categories = categoryMock;
-  global.products = productsMock;
+
   global.user = userMock;
 });
 

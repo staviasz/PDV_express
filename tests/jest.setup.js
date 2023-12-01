@@ -15,17 +15,33 @@ beforeAll(async () => {
       NODE_ENV: 'test',
     },
   });
+
   const hashedPassword = await bcrypt.hash('123456789', 10);
-  await knex('usuarios').insert({
+  const userMock = {
     nome: 'testeJest',
     email: 'teste@jest.com',
     senha: hashedPassword,
-  });
+  };
+  const categoryMock = [
+    { descricao: 'Informática' },
+    { descricao: 'Celulares' },
+    { descricao: 'Beleza e Perfumaria' },
+    { descricao: 'Mercado' },
+  ];
+
+  const queries = [
+    knex('usuarios').insert(userMock),
+    knex('categorias').insert(categoryMock),
+  ];
+
+  await Promise.all(queries);
+
   const response = await testServer.post('/login').send({
     email: 'teste@jest.com',
     senha: '123456789',
   });
   global.token = `Bearer ${response.body.token}`;
+  global.categories = categoryMock;
 });
 
 afterAll(async () => {

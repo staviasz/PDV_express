@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "jest --runInBand",
+    "test": "jest --runInBand ",
     "test:watch": "jest --watch --coverage false --runInBand",
     "test:coverage": "jest --coverage --runInBand",
     "dev": "node --watch src/index",

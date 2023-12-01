@@ -1,17 +1,44 @@
 const testServer = require('../../jest.setup');
+const dbConfig = require('../../../knexfile');
+const environment = process.env.NODE_ENV || 'development';
+const knex = require('knex')(dbConfig[environment]);
 
 const routeTest = async (body) => {
   return testServer
-    .post('/produto')
+    .put('/produto/1')
     .set({
       Authorization: `${global.token}`,
     })
     .send(body);
 };
 
-describe('Categories', () => {
+beforeAll(async () => {
+  const productsMock = [
+    {
+      descricao: 'productJest',
+      quantidade_estoque: 10,
+      valor: 100,
+      categoria_id: 3,
+    },
+    {
+      descricao: 'productJest2',
+      quantidade_estoque: 11,
+      valor: 100,
+      categoria_id: 2,
+    },
+    {
+      descricao: 'productJest3',
+      quantidade_estoque: 12,
+      valor: 100,
+      categoria_id: 2,
+    },
+  ];
+  await knex('produtos').insert(productsMock);
+});
+
+describe('Update products', () => {
   it('should is authorized', async () => {
-    const response = await testServer.post('/produto').send({
+    const response = await testServer.put('/produto:1').send({
       quantidade_estoque: 0,
       valor: 100,
       categoria_id: 0,
@@ -277,16 +304,41 @@ describe('Categories', () => {
   it('should success response', async () => {
     const mockProduct = [
       {
-        descricao: 'produto1',
+        categoria_id: 1,
+        descricao: 'produto1Update',
         quantidade_estoque: 100,
         valor: 100,
-        categoria_id: 1,
       },
     ];
+
+    const response = await testServer
+      .put('/produto/10')
+      .set({
+        Authorization: `${global.token}`,
+      })
+      .send(mockProduct[0]);
+
+    mockProduct[0].id = 1;
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({ mensagem: 'Produto não cadastrado' });
+  });
+
+  it('should success response', async () => {
+    const mockProduct = [
+      {
+        categoria_id: 1,
+        descricao: 'produto1Update',
+        quantidade_estoque: 100,
+        valor: 100,
+      },
+    ];
+
     mockProduct[0].id = 1;
 
     const response = await routeTest(mockProduct[0]);
-    expect(response.statusCode).toBe(201);
+
+    expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(mockProduct);
   });
 });

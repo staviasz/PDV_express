@@ -70,8 +70,8 @@ beforeAll(async () => {
 
   global.token = `Bearer ${response.body.token}`;
   global.categories = categoryMock;
-  global.user = userMock;
   global.clients = clientsMock;
+  global.user = userMock;
 });
 
 afterAll(async () => {

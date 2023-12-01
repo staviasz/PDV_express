@@ -10,15 +10,16 @@ const validateProduct = async (
   const errorSchema = await validateSchema(schemaProduct)(schemaValues);
   if (errorSchema) return errorSchema;
 
-  const categoryExist = await database('categorias')
-    .where('id', categoryId)
-    .first();
+  const queries = [
+    database('categorias').where({ id: categoryId }).first(),
+    database('produtos').where({ id: productId }).first(),
+  ];
+  const [categoryExist, productExist] = await Promise.all(queries);
   if (!categoryExist) {
     return 'A categoria não encontrada';
   }
-  if (productId) {
-    // vai ser usado na proxima rota
-    console.log(productId);
+  if (productId && !productExist) {
+    return 'Produto não cadastrado';
   }
   return;
 };

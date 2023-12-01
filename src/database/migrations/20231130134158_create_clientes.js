@@ -11,6 +11,12 @@ exports.up = async function (knex) {
       table.string('nome').notNullable();
       table.string('email').unique().notNullable();
       table.string('cpf', 11).unique().notNullable();
+      table.string('cep', 8);
+      table.string('rua', 255);
+      table.string('numero', 20);
+      table.string('bairro', 255);
+      table.string('cidade', 255);
+      table.string('estado', 255);
     });
   }
 };

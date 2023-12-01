@@ -92,7 +92,24 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const detailProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+      const product = await knex('produtos')
+          .where({ id });
+
+      if (product.length < 1) {
+          return errorRes.errorResponse400(res, 'Produto não encontrado.')
+      }
+      return successRes.successResponse200(res, product)
+  } catch (error) {
+      return errorRes.errorResponse500(res);
+  }
+};
+
+
 module.exports = {
   createProduct,
   updateProduct,
+  detailProduct
 };

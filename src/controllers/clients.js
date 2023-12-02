@@ -10,7 +10,11 @@ const registerClient = async (req, res) => {
   const { nome: name, email, cpf } = req.body;
 
   try {
-    const messageError = await validateClient(knex, { name, email, cpf });
+    const messageError = await validateClient(knex, {
+      name,
+      email,
+      cpf,
+    });
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
     const [newClient] = await knex('clientes').insert(

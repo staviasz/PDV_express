@@ -1,24 +1,17 @@
 const testServer = require('../../jest.setup');
-const dbConfig = require('../../../knexfile');
-const environment = process.env.NODE_ENV || 'development';
-const knex = require('knex')(dbConfig[environment]);
 
 const routeTest = async (body) => {
   return testServer
-    .post('/cliente')
+    .put('/cliente/1')
     .set({
       Authorization: `${global.token}`,
     })
     .send(body);
 };
 
-afterEach(async () => {
-  await knex('clientes').where({ nome: 'teste' }).del();
-});
-
 describe('Create clients', () => {
   it('should is authorized', async () => {
-    const response = await testServer.post('/cliente');
+    const response = await testServer.post('/cliente/1');
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
       mensagem: 'Usuario não autorizado',
@@ -517,23 +510,21 @@ describe('Create clients', () => {
       mensagem: 'O campo estado não aceita digitos e caracteres especiais',
     });
   });
-
-  it('should email exists', async () => {
-    const [client] = global.clients;
-    const response = await routeTest(client);
-
+  it('should cpf associated with another account', async () => {
+    const [clientOne, clientTwo] = global.clients;
+    clientOne.cpf = clientTwo.cpf;
+    const response = await routeTest(clientOne);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({ mensagem: 'CPF já cadastrado' });
+  });
+  it('should email associated with another account', async () => {
+    const [clientOne, clientTwo] = global.clients;
+    clientOne.email = clientTwo.email;
+    const response = await routeTest(clientOne);
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({ mensagem: 'Email já cadastrado' });
   });
 
-  it('should email exists', async () => {
-    const [client] = global.clients;
-    client.email = 'emai@update.com';
-    const response = await routeTest(client);
-
-    expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual({ mensagem: 'CPF já cadastrado' });
-  });
   it('should succes response with required fields', async () => {
     const userMock = {
       nome: 'teste',
@@ -542,7 +533,7 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 1,
       ...userMock,
       cep: null,
       rua: null,
@@ -551,7 +542,7 @@ describe('Create clients', () => {
       cidade: null,
       estado: null,
     };
-    expect(response.statusCode).toBe(201);
+    expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(responseBody);
   });
   it('should success with one filed not required', async () => {
@@ -563,7 +554,7 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 1,
       ...userMock,
       rua: null,
       numero: null,
@@ -571,7 +562,7 @@ describe('Create clients', () => {
       cidade: null,
       estado: null,
     };
-    expect(response.statusCode).toBe(201);
+    expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(responseBody);
   });
   it('should success with two filed not required', async () => {
@@ -584,14 +575,14 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 1,
       ...userMock,
       numero: null,
       bairro: null,
       cidade: null,
       estado: null,
     };
-    expect(response.statusCode).toBe(201);
+    expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(responseBody);
   });
   it('should success with tree filed not required', async () => {
@@ -605,13 +596,13 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 1,
       ...userMock,
       bairro: null,
       cidade: null,
       estado: null,
     };
-    expect(response.statusCode).toBe(201);
+    expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(responseBody);
   });
   it('should success with four filed not required', async () => {
@@ -626,12 +617,12 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 1,
       ...userMock,
       cidade: null,
       estado: null,
     };
-    expect(response.statusCode).toBe(201);
+    expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(responseBody);
   });
   it('should success with five filed not required', async () => {
@@ -647,11 +638,11 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 1,
       ...userMock,
       estado: null,
     };
-    expect(response.statusCode).toBe(201);
+    expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(responseBody);
   });
   it('should success with six filed not required', async () => {
@@ -668,10 +659,10 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 1,
       ...userMock,
     };
-    expect(response.statusCode).toBe(201);
+    expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(responseBody);
   });
 });

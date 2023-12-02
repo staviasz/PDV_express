@@ -7,13 +7,29 @@ const successRes = require('../utils/responses/successResponse');
 const validateClient = require('../utils/validators/validateClient');
 
 const registerClient = async (req, res) => {
-  const { nome: name, email, cpf } = req.body;
+  const {
+    cpf,
+    email,
+    nome: name,
+    cep: zipCode,
+    rua: street,
+    numero: number,
+    bairro: neighborhood,
+    cidade: city,
+    estado: state,
+  } = req.body;
 
   try {
     const messageError = await validateClient(knex, {
       name,
       email,
       cpf,
+      zipCode,
+      street,
+      number,
+      neighborhood,
+      city,
+      state,
     });
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
@@ -22,6 +38,12 @@ const registerClient = async (req, res) => {
         nome: name,
         email,
         cpf,
+        cep: zipCode,
+        rua: street,
+        numero: number,
+        bairro: neighborhood,
+        cidade: city,
+        estado: state,
       },
       '*',
     );
@@ -33,11 +55,25 @@ const registerClient = async (req, res) => {
 };
 
 const updateClient = async (req, res) => {
-  const { nome: name, email, cpf } = req.body;
+  const {
+    cpf,
+    email,
+    nome: name,
+    cep: zipCode,
+    rua: street,
+    numero: number,
+    bairro: neighborhood,
+    cidade: city,
+    estado: state,
+  } = req.body;
   const { id } = req.params;
 
   try {
-    const messageError = await validateClient(knex, { name, email, cpf }, id);
+    const messageError = await validateClient(
+      knex,
+      { name, email, cpf, zipCode, street, number, neighborhood, city, state },
+      id,
+    );
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
     const [newClient] = await knex('clientes').where({ id }).update(
@@ -45,6 +81,12 @@ const updateClient = async (req, res) => {
         nome: name,
         email,
         cpf,
+        cep: zipCode,
+        rua: street,
+        numero: number,
+        bairro: neighborhood,
+        cidade: city,
+        estado: state,
       },
       '*',
     );

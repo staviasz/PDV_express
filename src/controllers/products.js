@@ -127,9 +127,30 @@ const getProduct = async (req, res) => {
   }
 };
 
+const delProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const productExists = await knex('produtos')
+      .where({ id }).first();
+
+    if (!productExists) {
+      return errorRes.errorResponse400(res, 'Produto não encontrado.')
+    }
+
+    await knex('produtos')
+      .where({ id })
+      .del();
+
+    return successRes.successResponse200(res);
+  } catch (error) {
+    return errorRes.errorResponse500(error.message);
+  }
+};
+
 module.exports = {
   createProduct,
   updateProduct,
   detailProduct,
-  getProduct
+  getProduct,
+  delProduct
 };

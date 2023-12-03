@@ -103,14 +103,14 @@ const detailProduct = async (req, res) => {
     }
     return successRes.successResponse200(res, product)
   } catch (error) {
-    return errorRes.errorResponse500(res);
+    return errorRes.errorResponse500(error.message);
   }
 };
 
 const getProduct = async (req, res) => {
   const { categoria_id } = req.query;
   try {
-    const query = knex('produtos').select('descricao');
+    const query = knex('produtos');
 
     if (categoria_id) {
       query.where({ categoria_id });
@@ -123,7 +123,7 @@ const getProduct = async (req, res) => {
     }
     return successRes.successResponse200(res, products)
   } catch (error) {
-    return errorRes.errorResponse500(res);
+    return errorRes.errorResponse500(error.message);
   }
 };
 

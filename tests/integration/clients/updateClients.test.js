@@ -324,7 +324,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo numero não deve ser uma string',
+      mensagem: 'O campo numero deve ser uma string',
     });
   });
   it('should not have characters in the field numero', async () => {
@@ -336,7 +336,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O numero deve conter apenas números',
+      mensagem: 'O numero deve conter apenas digitos',
     });
   });
   it('should not have special characters in the field numero', async () => {
@@ -385,7 +385,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo bairro não deve ser uma string',
+      mensagem: 'O campo bairro deve ser uma string',
     });
   });
   it('should not is empty field cidade', async () => {
@@ -422,7 +422,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo cidade não deve ser uma string',
+      mensagem: 'O campo cidade deve ser uma string',
     });
   });
   it('should not have characters in the field cidade', async () => {
@@ -483,7 +483,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo estado não deve ser uma string',
+      mensagem: 'O campo estado deve ser uma string',
     });
   });
   it('should not have characters in the field estado', async () => {

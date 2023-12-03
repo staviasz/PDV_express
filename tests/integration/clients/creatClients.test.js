@@ -331,7 +331,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo numero não deve ser uma string',
+      mensagem: 'O campo numero deve ser uma string',
     });
   });
   it('should not have characters in the field numero', async () => {
@@ -343,7 +343,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O numero deve conter apenas números',
+      mensagem: 'O numero deve conter apenas digitos',
     });
   });
   it('should not have special characters in the field numero', async () => {
@@ -392,7 +392,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo bairro não deve ser uma string',
+      mensagem: 'O campo bairro deve ser uma string',
     });
   });
   it('should not is empty field cidade', async () => {
@@ -429,7 +429,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo cidade não deve ser uma string',
+      mensagem: 'O campo cidade deve ser uma string',
     });
   });
   it('should not have characters in the field cidade', async () => {
@@ -490,7 +490,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo estado não deve ser uma string',
+      mensagem: 'O campo estado deve ser uma string',
     });
   });
   it('should not have characters in the field estado', async () => {
@@ -517,7 +517,6 @@ describe('Create clients', () => {
       mensagem: 'O campo estado não aceita digitos e caracteres especiais',
     });
   });
-
   it('should email exists', async () => {
     const [client] = global.clients;
     const response = await routeTest(client);
@@ -525,7 +524,6 @@ describe('Create clients', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({ mensagem: 'Email já cadastrado' });
   });
-
   it('should email exists', async () => {
     const [client] = global.clients;
     client.email = 'emai@update.com';
@@ -563,7 +561,7 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 4,
       ...userMock,
       rua: null,
       numero: null,
@@ -584,13 +582,14 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 5,
       ...userMock,
       numero: null,
       bairro: null,
       cidade: null,
       estado: null,
     };
+
     expect(response.statusCode).toBe(201);
     expect(response.body).toEqual(responseBody);
   });
@@ -605,7 +604,7 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 6,
       ...userMock,
       bairro: null,
       cidade: null,
@@ -626,7 +625,7 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 7,
       ...userMock,
       cidade: null,
       estado: null,
@@ -647,7 +646,7 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 8,
       ...userMock,
       estado: null,
     };
@@ -668,7 +667,7 @@ describe('Create clients', () => {
     };
     const response = await routeTest(userMock);
     const responseBody = {
-      id: 3,
+      id: 9,
       ...userMock,
     };
     expect(response.statusCode).toBe(201);

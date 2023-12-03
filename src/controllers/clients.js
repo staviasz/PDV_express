@@ -107,4 +107,13 @@ const getClient = async (req, res) => {
   }
 };
 
-module.exports = { registerClient, updateClient, getClient };
+const listClients = async (req, res) => {
+  try {
+    const clients = await knex('clientes').orderBy('id');
+    return successRes.successResponse200(res, clients);
+  } catch (error) {
+    return errorRes.errorResponse500(res, error.message);
+  }
+};
+
+module.exports = { registerClient, updateClient, getClient, listClients };

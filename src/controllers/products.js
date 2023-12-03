@@ -103,7 +103,7 @@ const detailProduct = async (req, res) => {
       }
       return successRes.successResponse200(res, product)
   } catch (error) {
-      return errorRes.errorResponse500(res);
+      return errorRes.errorResponse500(error.message);
   }
 };
 

@@ -84,7 +84,6 @@ const updateProduct = async (req, res) => {
         '*',
       )
       .where({ id });
-
     return successRes.successResponse200(res, product);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);

@@ -35,12 +35,6 @@ beforeAll(async () => {
       nome: 'clienteUm',
       email: 'clente4@gmail.com',
       cpf: '53751122052',
-      cep: '11662730',
-      rua: 'Rua Álvaro de Azevedo',
-      numero: '123',
-      bairro: 'Martim de Sá',
-      cidade: 'Caraguatatuba',
-      estado: 'SP',
     },
     {
       nome: 'clienteDois',

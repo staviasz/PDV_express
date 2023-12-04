@@ -69,9 +69,6 @@ const updateClient = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const messageErrorId = await validations.validateIdClient(knex, id);
-    if (messageErrorId) return errorRes.errorResponse400(res, messageErrorId);
-
     const messageError = await validations.validateClient(
       knex,
       { name, email, cpf, zipCode, street, number, neighborhood, city, state },
@@ -103,10 +100,10 @@ const updateClient = async (req, res) => {
 const getClient = async (req, res) => {
   const { id } = req.params;
   try {
-    const messageError = await validations.validateIdClient(knex, id);
-    if (messageError) return errorRes.errorResponse400(res, messageError);
+    const client = await validations.validateIdClient(knex, id);
+    if (typeof client === 'string')
+      return errorRes.errorResponse404(res, client);
 
-    const client = await knex('clientes').where({ id }).first();
     return successRes.successResponse200(res, client);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);

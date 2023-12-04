@@ -145,6 +145,7 @@ module.exports = {
   createProduct,
   updateProduct,
   detailProduct,
+
   getProduct,
   delProduct,
 };

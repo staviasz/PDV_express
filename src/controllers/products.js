@@ -93,17 +93,14 @@ const updateProduct = async (req, res) => {
 const detailProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await knex('produtos')
-      .where({ id });
+    const product = await knex('produtos').where({ id });
 
     if (product.length < 1) {
-      return errorRes.errorResponse400(res, 'Produto não encontrado.')
+      return errorRes.errorResponse400(res, 'Produto não encontrado.');
     }
-    return successRes.successResponse200(res, product)
+    return successRes.successResponse200(res, product);
   } catch (error) {
-
     return errorRes.errorResponse500(error.message);
-
   }
 };
 
@@ -121,7 +118,7 @@ const getProduct = async (req, res) => {
       const noProductMsg = 'Não existe produto cadastrado nessa categoria';
       return errorRes.errorResponse400(res, noProductMsg);
     }
-    return successRes.successResponse200(res, products)
+    return successRes.successResponse200(res, products);
   } catch (error) {
     return errorRes.errorResponse500(error.message);
   }
@@ -131,5 +128,5 @@ module.exports = {
   createProduct,
   updateProduct,
   detailProduct,
-  getProduct
+  getProduct,
 };

@@ -48,6 +48,4 @@ const validateIdClient = async (database, id) => {
   return client;
 };
 
-module.exports = validateIdClient;
-
 module.exports = { validateClient, validateIdClient };

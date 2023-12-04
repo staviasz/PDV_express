@@ -2,29 +2,38 @@ const schemaClient = require('../schemas/schemaClient');
 const validateSchema = require('./validateSchema');
 
 const validateClient = async (database, schemaValues, id = null) => {
-  const errorSchema = await validateSchema(schemaClient)(schemaValues);
-  if (errorSchema) {
-    return errorSchema;
-  }
-  const { cpf, email } = schemaValues;
+  try {
+    const errorSchema = await validateSchema(schemaClient)(schemaValues);
+    if (errorSchema) {
+      return errorSchema;
+    }
+    const { cpf, email } = schemaValues;
 
-  const emailExists = await database('clientes')
-    .where({ email })
-    .whereNot({ id })
-    .first();
-  if (emailExists) {
-    return 'Email já cadastrado';
-  }
+    const promisses = [
+      database('clientes').where({ email }).whereNot({ id }).first(),
+      database('clientes').where({ cpf }).whereNot({ id }).first(),
+      validateIdClient(database, id),
+    ];
+    const [emailExists, cpfExists, clientExist] = await Promise.all(promisses);
 
-  const cpfExists = await database('clientes')
-    .where({ cpf })
-    .whereNot({ id })
-    .first();
-  if (cpfExists) {
-    return 'CPF já cadastrado';
-  }
+    if (id) {
+      if (typeof clientExist === 'string') {
+        return clientExist;
+      }
+    }
 
-  return;
+    if (emailExists) {
+      return 'Email já cadastrado';
+    }
+
+    if (cpfExists) {
+      return 'CPF já cadastrado';
+    }
+
+    return;
+  } catch (error) {
+    return error.message;
+  }
 };
 
 const validateIdClient = async (database, id) => {
@@ -35,8 +44,8 @@ const validateIdClient = async (database, id) => {
   if (!client) {
     return 'Cliente não encontrado';
   }
-};
 
-module.exports = validateIdClient;
+  return client;
+};
 
 module.exports = { validateClient, validateIdClient };

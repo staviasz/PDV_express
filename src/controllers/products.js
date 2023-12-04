@@ -93,6 +93,7 @@ const updateProduct = async (req, res) => {
 const detailProduct = async (req, res) => {
   const { id } = req.params;
   try {
+
     const product = await knex('produtos')
       .where({ id });
 
@@ -151,6 +152,8 @@ module.exports = {
   createProduct,
   updateProduct,
   detailProduct,
+
   getProduct,
   delProduct
+
 };

@@ -93,14 +93,58 @@ const updateProduct = async (req, res) => {
 const detailProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await knex('produtos').where({ id });
+
+    const product = await knex('produtos')
+      .where({ id });
 
     if (product.length < 1) {
-      return errorRes.errorResponse400(res, 'Produto não encontrado.');
+      return errorRes.errorResponse400(res, 'Produto não encontrado.')
     }
-    return successRes.successResponse200(res, product);
+    return successRes.successResponse200(res, product)
   } catch (error) {
-    return errorRes.errorResponse500(error.message);
+
+    return errorRes.errorResponse500(res, error.message);
+
+  }
+};
+
+const getProduct = async (req, res) => {
+  const { categoria_id } = req.query;
+  try {
+    const query = knex('produtos');
+
+    if (categoria_id) {
+      query.where({ categoria_id });
+    }
+
+    const products = await query;
+    if (products.length < 1) {
+      const noProductMsg = 'Não existe produto cadastrado nessa categoria';
+      return errorRes.errorResponse400(res, noProductMsg);
+    }
+    return successRes.successResponse200(res, products)
+  } catch (error) {
+    return errorRes.errorResponse500(res, error.message);
+  }
+};
+
+const delProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const productExists = await knex('produtos')
+      .where({ id }).first();
+
+    if (!productExists) {
+      return errorRes.errorResponse400(res, 'Produto não encontrado.')
+    }
+
+    await knex('produtos')
+      .where({ id })
+      .del();
+
+    return successRes.successResponse200(res);
+  } catch (error) {
+    return errorRes.errorResponse500(res, error.message);
   }
 };
 
@@ -108,4 +152,8 @@ module.exports = {
   createProduct,
   updateProduct,
   detailProduct,
+
+  getProduct,
+  delProduct
+
 };

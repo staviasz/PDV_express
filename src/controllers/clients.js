@@ -4,10 +4,7 @@ const knex = require('knex')(dbConfig[environment]);
 
 const errorRes = require('../utils/responses/errorResponse');
 const successRes = require('../utils/responses/successResponse');
-const {
-  validateClient,
-  validateIdClient,
-} = require('../utils/validators/validateClient');
+const validations = require('../utils/validators/validateClient');
 
 const registerClient = async (req, res) => {
   const {
@@ -23,7 +20,7 @@ const registerClient = async (req, res) => {
   } = req.body;
 
   try {
-    const messageError = await validateClient(knex, {
+    const messageError = await validations.validateClient(knex, {
       name,
       email,
       cpf,
@@ -72,10 +69,10 @@ const updateClient = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const messageErrorId = await validateIdClient(knex, id);
+    const messageErrorId = await validations.validateIdClient(knex, id);
     if (messageErrorId) return errorRes.errorResponse400(res, messageErrorId);
 
-    const messageError = await validateClient(
+    const messageError = await validations.validateClient(
       knex,
       { name, email, cpf, zipCode, street, number, neighborhood, city, state },
       id,
@@ -106,7 +103,7 @@ const updateClient = async (req, res) => {
 const getClient = async (req, res) => {
   const { id } = req.params;
   try {
-    const messageError = await validateIdClient(knex, id);
+    const messageError = await validations.validateIdClient(knex, id);
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
     const client = await knex('clientes').where({ id }).first();

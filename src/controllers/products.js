@@ -110,14 +110,20 @@ const getProduct = async (req, res) => {
     const query = knex('produtos');
 
     if (categoria_id) {
+      const categoryExist = await knex('categorias')
+        .where({ id: categoria_id })
+        .first();
+      if (!categoryExist) {
+        return errorRes.errorResponse400(
+          res,
+          'A categoria solicitada não existe',
+        );
+      }
       query.where({ categoria_id });
     }
 
     const products = await query;
-    if (products.length < 1) {
-      const noProductMsg = 'Não existe produto cadastrado nessa categoria';
-      return errorRes.errorResponse400(res, noProductMsg);
-    }
+
     return successRes.successResponse200(res, products);
   } catch (error) {
     return errorRes.errorResponse500(error.message);

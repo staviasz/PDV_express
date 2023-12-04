@@ -102,7 +102,7 @@ const detailProduct = async (req, res) => {
     return successRes.successResponse200(res, product)
   } catch (error) {
 
-    return errorRes.errorResponse500(error.message);
+    return errorRes.errorResponse500(res, error.message);
 
   }
 };
@@ -123,7 +123,27 @@ const getProduct = async (req, res) => {
     }
     return successRes.successResponse200(res, products)
   } catch (error) {
-    return errorRes.errorResponse500(error.message);
+    return errorRes.errorResponse500(res, error.message);
+  }
+};
+
+const delProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const productExists = await knex('produtos')
+      .where({ id }).first();
+
+    if (!productExists) {
+      return errorRes.errorResponse400(res, 'Produto não encontrado.')
+    }
+
+    await knex('produtos')
+      .where({ id })
+      .del();
+
+    return successRes.successResponse200(res);
+  } catch (error) {
+    return errorRes.errorResponse500(res, error.message);
   }
 };
 
@@ -131,5 +151,6 @@ module.exports = {
   createProduct,
   updateProduct,
   detailProduct,
-  getProduct
+  getProduct,
+  delProduct
 };

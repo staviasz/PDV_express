@@ -104,8 +104,29 @@ const detailProduct = async (req, res) => {
   }
 };
 
+const getProduct = async (req, res) => {
+  const { categoria_id } = req.query;
+  try {
+    const query = knex('produtos');
+
+    if (categoria_id) {
+      query.where({ categoria_id });
+    }
+
+    const products = await query;
+    if (products.length < 1) {
+      const noProductMsg = 'Não existe produto cadastrado nessa categoria';
+      return errorRes.errorResponse400(res, noProductMsg);
+    }
+    return successRes.successResponse200(res, products);
+  } catch (error) {
+    return errorRes.errorResponse500(error.message);
+  }
+};
+
 module.exports = {
   createProduct,
   updateProduct,
   detailProduct,
+  getProduct,
 };

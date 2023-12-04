@@ -283,7 +283,7 @@ describe('Categories', () => {
         categoria_id: 1,
       },
     ];
-    mockProduct[0].id = 4;
+    mockProduct[0].id = 1;
 
     const response = await routeTest(mockProduct[0]);
     expect(response.statusCode).toBe(201);

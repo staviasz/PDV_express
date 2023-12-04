@@ -127,15 +127,12 @@ const getProduct = async (req, res) => {
 const delProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const productExists = await knex('produtos').where({ id }).first();
-
-    if (!productExists) {
+    const response = await knex('produtos').where({ id }).del();
+    if (!response) {
       return errorRes.errorResponse400(res, 'Produto não encontrado.');
     }
 
-    await knex('produtos').where({ id }).del();
-
-    return successRes.successResponse200(res);
+    return successRes.successResponse204(res);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);
   }

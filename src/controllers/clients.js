@@ -4,7 +4,7 @@ const knex = require('knex')(dbConfig[environment]);
 
 const errorRes = require('../utils/responses/errorResponse');
 const successRes = require('../utils/responses/successResponse');
-const validateClient = require('../utils/validators/validateClient');
+const validations = require('../utils/validators/validateClient');
 
 const registerClient = async (req, res) => {
   const {
@@ -20,7 +20,7 @@ const registerClient = async (req, res) => {
   } = req.body;
 
   try {
-    const messageError = await validateClient(knex, {
+    const messageError = await validations.validateClient(knex, {
       name,
       email,
       cpf,
@@ -69,7 +69,10 @@ const updateClient = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const messageError = await validateClient(
+    const messageErrorId = await validations.validateIdClient(knex, id);
+    if (messageErrorId) return errorRes.errorResponse400(res, messageErrorId);
+
+    const messageError = await validations.validateClient(
       knex,
       { name, email, cpf, zipCode, street, number, neighborhood, city, state },
       id,
@@ -100,6 +103,9 @@ const updateClient = async (req, res) => {
 const getClient = async (req, res) => {
   const { id } = req.params;
   try {
+    const messageError = await validations.validateIdClient(knex, id);
+    if (messageError) return errorRes.errorResponse400(res, messageError);
+
     const client = await knex('clientes').where({ id }).first();
     return successRes.successResponse200(res, client);
   } catch (error) {
@@ -107,4 +113,13 @@ const getClient = async (req, res) => {
   }
 };
 
-module.exports = { registerClient, updateClient, getClient };
+const listClients = async (req, res) => {
+  try {
+    const clients = await knex('clientes').orderBy('id');
+    return successRes.successResponse200(res, clients);
+  } catch (error) {
+    return errorRes.errorResponse500(res, error.message);
+  }
+};
+
+module.exports = { registerClient, updateClient, getClient, listClients };

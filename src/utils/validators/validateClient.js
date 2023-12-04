@@ -8,16 +8,6 @@ const validateClient = async (database, schemaValues, id = null) => {
   }
   const { cpf, email } = schemaValues;
 
-  if (id != null) {
-    // o id vai ser validado pelo proprio db e retornar no bloco catch
-    if (!Number(id)) {
-      return 'O id precisa ser um número';
-    }
-    const client = await database('clientes').where({ id }).first();
-    if (!client) {
-      return 'Cliente não encontrado';
-    }
-  }
   const emailExists = await database('clientes')
     .where({ email })
     .whereNot({ id })
@@ -37,4 +27,16 @@ const validateClient = async (database, schemaValues, id = null) => {
   return;
 };
 
-module.exports = validateClient;
+const validateIdClient = async (database, id) => {
+  if (!Number(id)) {
+    return 'O id precisa ser um número';
+  }
+  const client = await database('clientes').where({ id }).first();
+  if (!client) {
+    return 'Cliente não encontrado';
+  }
+};
+
+module.exports = validateIdClient;
+
+module.exports = { validateClient, validateIdClient };

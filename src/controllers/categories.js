@@ -7,7 +7,7 @@ const successRes = require('../utils/responses/successResponse');
 
 const getCategories = async (req, res) => {
   try {
-    const categories = await knex('categorias').select('descricao');
+    const categories = await knex('categorias');
     return successRes.successResponse200(res, categories);
   } catch (error) {
     return errorRes.errorResponse500(error.message);

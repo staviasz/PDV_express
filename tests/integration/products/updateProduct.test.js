@@ -3,7 +3,6 @@ const dbConfig = require('../../../knexfile');
 const environment = process.env.NODE_ENV || 'development';
 const knex = require('knex')(dbConfig[environment]);
 
-
 const routeTest = async (body) => {
   return testServer
     .put('/produto/1')

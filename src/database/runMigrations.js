@@ -6,7 +6,8 @@ const runMigrations = async () => {
   try {
     await knex.migrate.latest();
   } catch (error) {
-    throw new Error('database connction failure');
+    console.log('error', error.message);
+    throw new Error('database conection failure');
   } finally {
     await knex.destroy();
   }

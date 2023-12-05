@@ -9,18 +9,63 @@ const { execSync } = require('child_process');
 const testServer = supertest(server);
 
 beforeAll(async () => {
-  execSync('NODE_ENV=test npx knex migrate:latest');
+  execSync('npx knex migrate:latest', {
+    env: {
+      ...process.env,
+      NODE_ENV: 'test',
+    },
+  });
+
   const hashedPassword = await bcrypt.hash('123456789', 10);
-  await knex('usuarios').insert({
+  const userMock = {
     nome: 'testeJest',
     email: 'teste@jest.com',
     senha: hashedPassword,
-  });
+  };
+
+  const categoryMock = [
+    { descricao: 'Informática' },
+    { descricao: 'Celulares' },
+    { descricao: 'Beleza e Perfumaria' },
+    { descricao: 'Mercado' },
+  ];
+
+  const clientsMock = [
+    {
+      nome: 'clienteUm',
+      email: 'clente4@gmail.com',
+      cpf: '53751122052',
+    },
+    {
+      nome: 'clienteDois',
+      email: 'clente5@gmail.com',
+      cpf: '19420812006',
+      cep: '69314416',
+      rua: 'Rua Sião',
+      numero: '1234',
+      bairro: 'Nova Canaã',
+      cidade: 'Boa Vista',
+      estado: 'RR',
+    },
+  ];
+
+  const queries = [
+    knex('usuarios').insert(userMock),
+    knex('categorias').insert(categoryMock),
+    knex('clientes').insert(clientsMock),
+  ];
+
+  await Promise.all(queries);
+
   const response = await testServer.post('/login').send({
     email: 'teste@jest.com',
     senha: '123456789',
   });
+
   global.token = `Bearer ${response.body.token}`;
+  global.categories = categoryMock;
+  global.clients = clientsMock;
+  global.user = userMock;
 });
 
 afterAll(async () => {
@@ -29,7 +74,12 @@ afterAll(async () => {
   } catch (error) {
     console.error('Error during deletion:', error);
   }
-  execSync('NODE_ENV=test npx knex migrate:rollback');
+  execSync('npx knex migrate:rollback', {
+    env: {
+      ...process.env,
+      NODE_ENV: 'test',
+    },
+  });
   await knex.destroy();
 });
 

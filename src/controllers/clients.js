@@ -33,11 +33,12 @@ const registerClient = async (req, res) => {
     });
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
+    const cleanCpf = cpf.replace(/\D/g, '');
     const [newClient] = await knex('clientes').insert(
       {
         nome: name,
         email,
-        cpf: cpf.replace(/\D/g, ''),
+        cpf: cleanCpf,
         cep: zipCode,
         rua: street,
         numero: number,
@@ -76,11 +77,12 @@ const updateClient = async (req, res) => {
     );
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
+    const cleanCpf = cpf.replace(/\D/g, '');
     const [newClient] = await knex('clientes').where({ id }).update(
       {
         nome: name,
         email,
-        cpf,
+        cpf: cleanCpf,
         cep: zipCode,
         rua: street,
         numero: number,

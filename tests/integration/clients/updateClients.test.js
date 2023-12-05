@@ -650,12 +650,15 @@ describe("Create clients", () => {
     const userMock = {
       nome: "teste",
       email: "teste@teste.com",
-      cpf: "01234567890",
+      cpf: "0123456789-0",
     };
+
+    const cleanCpf = userMock.cpf.replace(/\D/g, "");
     const response = await routeTest(userMock);
     const responseBody = {
       id: 1,
       ...userMock,
+      cpf: cleanCpf,
       cep: null,
       rua: null,
       numero: null,
@@ -675,6 +678,7 @@ describe("Create clients", () => {
       cpf: "01234567890",
       cep: "12345678",
     };
+
     const response = await routeTest(userMock);
     const responseBody = {
       id: 1,

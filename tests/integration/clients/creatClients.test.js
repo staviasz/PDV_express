@@ -12,6 +12,10 @@ const routeTest = async (body) => {
     .send(body);
 };
 
+const formatCpf = (cpf) => {
+  return cpf.replace(/\D/g, "");
+};
+
 afterEach(async () => {
   await knex("clientes").where({ nome: "teste" }).del();
 });
@@ -546,16 +550,16 @@ describe("Create clients", () => {
     expect(response.body).toEqual({ mensagem: "CPF já cadastrado" });
   });
   it("should succes response with required fields", async () => {
-    const userMock = {
+    const clientMock = {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "0123456789-0",
     };
-    const cleanCpf = userMock.cpf.replace(/\D/g, "");
-    const response = await routeTest(userMock);
+    const cleanCpf = clientMock.cpf.replace(/\D/g, "");
+    const response = await routeTest(clientMock);
     const responseBody = {
       id: 3,
-      ...userMock,
+      ...clientMock,
       cpf: cleanCpf,
       cep: null,
       rua: null,
@@ -568,16 +572,16 @@ describe("Create clients", () => {
     expect(response.body).toEqual(responseBody);
   });
   it("should success with one filed not required", async () => {
-    const userMock = {
+    const clientMock = {
       nome: "teste",
       email: "teste1@teste.com",
       cpf: "01234567890",
       cep: "12345678",
     };
-    const response = await routeTest(userMock);
+    const response = await routeTest(clientMock);
     const responseBody = {
       id: 4,
-      ...userMock,
+      ...clientMock,
       rua: null,
       numero: null,
       bairro: null,
@@ -588,17 +592,17 @@ describe("Create clients", () => {
     expect(response.body).toEqual(responseBody);
   });
   it("should success with two filed not required", async () => {
-    const userMock = {
+    const clientMock = {
       nome: "teste",
       email: "teste1@teste.com",
       cpf: "01234567890",
       cep: "12345678",
       rua: "Rio de janeiro",
     };
-    const response = await routeTest(userMock);
+    const response = await routeTest(clientMock);
     const responseBody = {
       id: 5,
-      ...userMock,
+      ...clientMock,
       numero: null,
       bairro: null,
       cidade: null,
@@ -609,18 +613,19 @@ describe("Create clients", () => {
     expect(response.body).toEqual(responseBody);
   });
   it("should success with tree filed not required", async () => {
-    const userMock = {
+    const clientMock = {
       nome: "teste",
       email: "teste1@teste.com",
-      cpf: "01234567890",
+      cpf: "012.345.678-90",
       cep: "12345678",
       rua: "Rio de janeiro",
       numero: "123",
     };
-    const response = await routeTest(userMock);
+    const response = await routeTest(clientMock);
     const responseBody = {
       id: 6,
-      ...userMock,
+      ...clientMock,
+      cpf: formatCpf(clientMock.cpf),
       bairro: null,
       cidade: null,
       estado: null,
@@ -629,7 +634,7 @@ describe("Create clients", () => {
     expect(response.body).toEqual(responseBody);
   });
   it("should success with four filed not required", async () => {
-    const userMock = {
+    const clientMock = {
       nome: "teste",
       email: "teste1@teste.com",
       cpf: "01234567890",
@@ -638,10 +643,10 @@ describe("Create clients", () => {
       numero: "123",
       bairro: "bairo de teste",
     };
-    const response = await routeTest(userMock);
+    const response = await routeTest(clientMock);
     const responseBody = {
       id: 7,
-      ...userMock,
+      ...clientMock,
       cidade: null,
       estado: null,
     };
@@ -649,7 +654,7 @@ describe("Create clients", () => {
     expect(response.body).toEqual(responseBody);
   });
   it("should success with five filed not required", async () => {
-    const userMock = {
+    const clientMock = {
       nome: "teste",
       email: "teste1@teste.com",
       cpf: "01234567890",
@@ -659,17 +664,17 @@ describe("Create clients", () => {
       bairro: "bairo de teste",
       cidade: "salvador",
     };
-    const response = await routeTest(userMock);
+    const response = await routeTest(clientMock);
     const responseBody = {
       id: 8,
-      ...userMock,
+      ...clientMock,
       estado: null,
     };
     expect(response.statusCode).toBe(201);
     expect(response.body).toEqual(responseBody);
   });
   it("should success with six filed not required", async () => {
-    const userMock = {
+    const clientMock = {
       nome: "teste",
       email: "teste1@teste.com",
       cpf: "01234567890",
@@ -680,10 +685,10 @@ describe("Create clients", () => {
       cidade: "salvador",
       estado: "bahia",
     };
-    const response = await routeTest(userMock);
+    const response = await routeTest(clientMock);
     const responseBody = {
       id: 9,
-      ...userMock,
+      ...clientMock,
     };
     expect(response.statusCode).toBe(201);
     expect(response.body).toEqual(responseBody);

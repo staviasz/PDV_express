@@ -9,6 +9,7 @@ const validateClient = async (database, schemaValues, id = null) => {
       return errorSchema;
     }
     const { cpf, email } = schemaValues;
+    const cleanCpf = cpf.replace(/\D/g, "");
 
     if (!CPF.isValid(cpf)) {
       return "CPF inválido";
@@ -16,7 +17,7 @@ const validateClient = async (database, schemaValues, id = null) => {
 
     const promisses = [
       database("clientes").where({ email }).whereNot({ id }).first(),
-      database("clientes").where({ cpf }).whereNot({ id }).first(),
+      database("clientes").where({ cpf: cleanCpf }).whereNot({ id }).first(),
       validateIdClient(database, id),
     ];
     const [emailExists, cpfExists, clientExist] = await Promise.all(promisses);
@@ -30,7 +31,6 @@ const validateClient = async (database, schemaValues, id = null) => {
     if (emailExists) {
       return "Email já cadastrado";
     }
-
     if (cpfExists) {
       return "CPF já cadastrado";
     }

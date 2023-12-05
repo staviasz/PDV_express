@@ -9,6 +9,10 @@ const routeTest = async (body) => {
     .send(body);
 };
 
+const formatCpf = (cpf) => {
+  return cpf.replace(/\D/g, "");
+};
+
 describe("Create clients", () => {
   it("should is authorized", async () => {
     const response = await testServer.post("/cliente/1");
@@ -720,7 +724,7 @@ describe("Create clients", () => {
     const userMock = {
       nome: "teste",
       email: "teste1@teste.com",
-      cpf: "01234567890",
+      cpf: "012.345.678-90",
       cep: "12345678",
       rua: "Rio de janeiro",
       numero: "123",
@@ -729,6 +733,7 @@ describe("Create clients", () => {
     const responseBody = {
       id: 1,
       ...userMock,
+      cpf: formatCpf(userMock.cpf),
       bairro: null,
       cidade: null,
       estado: null,

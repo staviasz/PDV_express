@@ -37,7 +37,7 @@ const registerClient = async (req, res) => {
       {
         nome: name,
         email,
-        cpf,
+        cpf: cpf.replace(/\D/g, ''),
         cep: zipCode,
         rua: street,
         numero: number,

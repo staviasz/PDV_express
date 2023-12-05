@@ -26,6 +26,7 @@ describe('Create clients', () => {
   });
   it('should is required field nome', async () => {
     const response = await routeTest({});
+
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
       mensagem: 'O campo nome é obrigatório',
@@ -44,6 +45,7 @@ describe('Create clients', () => {
     const response = await routeTest({
       nome: 123,
     });
+
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
       mensagem: 'O nome não deve conter numeros',
@@ -146,7 +148,7 @@ describe('Create clients', () => {
       mensagem: 'O CPF não deve conter numeros',
     });
   });
-  it('should not is less than 11 charactres field cpf', async () => {
+  it('should minimum 11 charactres field cpf', async () => {
     const response = await routeTest({
       nome: 'teste',
       email: 'teste@teste.com',
@@ -154,21 +156,21 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O CPF deve ter exatamente 11 dígitos',
+      mensagem: 'O CPF deve conter no minimo 11 caracteres',
     });
   });
-  it('should not is loger than 11 charactres field cpf', async () => {
+  it('should maximum 14 charactres charactres field cpf', async () => {
     const response = await routeTest({
       nome: 'teste',
       email: 'teste@teste.com',
-      cpf: '123456789012',
+      cpf: '123456789012345',
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O CPF deve ter exatamente 11 dígitos',
+      mensagem: 'O CPF deve conter no maximo 14 caracteres',
     });
   });
-  it('should not have characters in the field cpf', async () => {
+  it('should not have letters in the field cpf', async () => {
     const response = await routeTest({
       nome: 'teste',
       email: 'teste@teste.com',
@@ -176,7 +178,7 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O CPF deve conter apenas números',
+      mensagem: 'O CPF permite apenas digitos, (.) e (-)',
     });
   });
   it('should not have special characters in the field cpf', async () => {
@@ -187,7 +189,18 @@ describe('Create clients', () => {
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O CPF deve conter apenas números',
+      mensagem: 'O CPF permite apenas digitos, (.) e (-)',
+    });
+  });
+  it('should error invalid cpf', async () => {
+    const response = await routeTest({
+      nome: 'teste',
+      email: 'teste@teste.com',
+      cpf: '11234567890',
+    });
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: 'CPF inválido',
     });
   });
   it('should not is empty field cep', async () => {

@@ -22,13 +22,19 @@ const schemaClient = Joi.object({
     'string.base': 'O email não deve conter numeros',
   }),
 
-  cpf: Joi.string().required().length(11).pattern(/^\d+$/).messages({
-    'any.required': 'O campo CPF é obrigatório',
-    'string.empty': 'O campo CPF é obrigatório',
-    'string.length': 'O CPF deve ter exatamente 11 dígitos',
-    'string.pattern.base': 'O CPF deve conter apenas números',
-    'string.base': 'O CPF não deve conter numeros',
-  }),
+  cpf: Joi.string()
+    .required()
+    .min(11)
+    .max(14)
+    .pattern(/^[0-9.-]+$/)
+    .messages({
+      'any.required': 'O campo CPF é obrigatório',
+      'string.empty': 'O campo CPF é obrigatório',
+      'string.min': 'O CPF deve conter no minimo 11 caracteres',
+      'string.max': 'O CPF deve conter no maximo 14 caracteres',
+      'string.pattern.base': 'O CPF permite apenas digitos, (.) e (-)',
+      'string.base': 'O CPF não deve conter numeros',
+    }),
 
   zipCode: Joi.string().length(8).pattern(/^\d+$/).messages({
     'string.empty': 'O campo CEP não pode estar vazio',

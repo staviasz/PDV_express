@@ -618,7 +618,7 @@ describe("Create clients", () => {
       email: "teste1@teste.com",
       cpf: "012.345.678-90",
       cep: "12345678",
-      rua: "Rio de janeiro",
+      rua: "Rio. de janeiro",
       numero: "123",
     };
     const response = await routeTest(clientMock);
@@ -639,7 +639,7 @@ describe("Create clients", () => {
       email: "teste1@teste.com",
       cpf: "01234567890",
       cep: "12345678",
-      rua: "Rio de janeiro",
+      rua: "Rio de - janeiro",
       numero: "123",
       bairro: "bairo de teste",
     };
@@ -682,8 +682,8 @@ describe("Create clients", () => {
       rua: "Rio de janeiro",
       numero: "123",
       bairro: "bairo de teste",
-      cidade: "salvador",
-      estado: "bahia",
+      cidade: "salvador-",
+      estado: "bahia-",
     };
     const response = await routeTest(clientMock);
     const responseBody = {

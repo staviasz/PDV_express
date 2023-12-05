@@ -44,7 +44,7 @@ const schemaClient = Joi.object({
   }),
 
   street: Joi.string()
-    .regex(/^[a-zA-ZÀ-ÿs-\s]+$/)
+    .regex(/^[a-zA-ZÀ-ÿs-\s.]+$/)
     .max(255)
     .messages({
       "string.empty": "O campo rua não pode estar vazio",
@@ -67,7 +67,7 @@ const schemaClient = Joi.object({
   }),
 
   city: Joi.string()
-    .regex(/^[a-zA-ZÀ-ÿs-\s]+$/)
+    .regex(/^[a-zA-ZÀ-ÿs-\s.]+$/)
     .max(255)
     .messages({
       "string.empty": "O campo cidade não pode estar vazio",

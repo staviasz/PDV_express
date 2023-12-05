@@ -1,11 +1,11 @@
-const testServer = require('../../jest.setup');
+const testServer = require("../../jest.setup");
 
 const routeTest = async (body) => {
-  return testServer.get('/categoria').send(body);
+  return testServer.get("/categoria").send(body);
 };
 
-describe('Categories', () => {
-  it('should list categories', async () => {
+describe("Categories", () => {
+  it("should list categories", async () => {
     for (let i = 0; i < global.categories.length; i++) {
       global.categories[i].id = i + 1;
     }

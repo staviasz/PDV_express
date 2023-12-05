@@ -1,12 +1,12 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const dbConfig = require('../../knexfile');
-const environment = process.env.NODE_ENV || 'development';
-const knex = require('knex')(dbConfig[environment]);
+const dbConfig = require("../../knexfile");
+const environment = process.env.NODE_ENV || "development";
+const knex = require("knex")(dbConfig[environment]);
 
-const errorRes = require('../utils/responses/errorResponse');
-const successRes = require('../utils/responses/successResponse');
-const validateProduct = require('../utils/validators/validateProduct');
+const errorRes = require("../utils/responses/errorResponse");
+const successRes = require("../utils/responses/successResponse");
+const validateProduct = require("../utils/validators/validateProduct");
 
 const createProduct = async (req, res) => {
   const {
@@ -31,14 +31,14 @@ const createProduct = async (req, res) => {
       return errorRes.errorResponse400(res, validProduct);
     }
 
-    const product = await knex('produtos').insert(
+    const product = await knex("produtos").insert(
       {
         descricao: description,
         valor: value,
         quantidade_estoque: amount,
         categoria_id: category_id,
       },
-      '*',
+      "*",
     );
 
     return successRes.successResponse201(res, product);
@@ -69,11 +69,11 @@ const updateProduct = async (req, res) => {
       category_id,
       id,
     );
-    if (typeof validProduct === 'string') {
+    if (typeof validProduct === "string") {
       return errorRes.errorResponse400(res, validProduct);
     }
 
-    const product = await knex('produtos')
+    const product = await knex("produtos")
       .update(
         {
           descricao: description,
@@ -81,7 +81,7 @@ const updateProduct = async (req, res) => {
           quantidade_estoque: amount,
           categoria_id: category_id,
         },
-        '*',
+        "*",
       )
       .where({ id });
     return successRes.successResponse200(res, product);
@@ -93,10 +93,10 @@ const updateProduct = async (req, res) => {
 const detailProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const [product] = await knex('produtos').where({ id });
+    const [product] = await knex("produtos").where({ id });
 
     if (!product) {
-      return errorRes.errorResponse404(res, 'Produto não encontrado.');
+      return errorRes.errorResponse404(res, "Produto não encontrado.");
     }
     return successRes.successResponse200(res, product);
   } catch (error) {
@@ -107,16 +107,16 @@ const detailProduct = async (req, res) => {
 const getProduct = async (req, res) => {
   const { categoria_id } = req.query;
   try {
-    const query = knex('produtos');
+    const query = knex("produtos");
 
     if (categoria_id) {
-      const categoryExist = await knex('categorias')
+      const categoryExist = await knex("categorias")
         .where({ id: categoria_id })
         .first();
       if (!categoryExist) {
         return errorRes.errorResponse400(
           res,
-          'A categoria solicitada não existe',
+          "A categoria solicitada não existe",
         );
       }
       query.where({ categoria_id });
@@ -133,9 +133,9 @@ const getProduct = async (req, res) => {
 const delProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const response = await knex('produtos').where({ id }).del();
+    const response = await knex("produtos").where({ id }).del();
     if (!response) {
-      return errorRes.errorResponse400(res, 'Produto não encontrado.');
+      return errorRes.errorResponse400(res, "Produto não encontrado.");
     }
 
     return successRes.successResponse204(res);

@@ -1,17 +1,17 @@
-const testServer = require('../../jest.setup');
+const testServer = require("../../jest.setup");
 
-describe('List Client', () => {
-  it('should is authorized', async () => {
-    const response = await testServer.get('/cliente');
+describe("List Client", () => {
+  it("should is authorized", async () => {
+    const response = await testServer.get("/cliente");
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
-      mensagem: 'Usuario não autorizado',
+      mensagem: "Usuario não autorizado",
     });
   });
 
-  it('should success response', async () => {
-    const response = await testServer.get('/cliente').set({
+  it("should success response", async () => {
+    const response = await testServer.get("/cliente").set({
       Authorization: `${global.token}`,
     });
 

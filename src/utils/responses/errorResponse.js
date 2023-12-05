@@ -10,7 +10,7 @@ const errorResponse403 = (res, mensagem) => {
 const errorResponse404 = (res, mensagem) => {
   return res.status(404).send({ mensagem });
 };
-const errorResponse500 = (res, mensagem = 'Erro no servidor') => {
+const errorResponse500 = (res, mensagem = "Erro no servidor") => {
   return res.status(500).send({ mensagem });
 };
 

@@ -1,10 +1,10 @@
-const dbConfig = require('../../knexfile');
-const environment = process.env.NODE_ENV || 'development';
-const knex = require('knex')(dbConfig[environment]);
+const dbConfig = require("../../knexfile");
+const environment = process.env.NODE_ENV || "development";
+const knex = require("knex")(dbConfig[environment]);
 
-const errorRes = require('../utils/responses/errorResponse');
-const successRes = require('../utils/responses/successResponse');
-const validations = require('../utils/validators/validateClient');
+const errorRes = require("../utils/responses/errorResponse");
+const successRes = require("../utils/responses/successResponse");
+const validations = require("../utils/validators/validateClient");
 
 const registerClient = async (req, res) => {
   const {
@@ -33,8 +33,8 @@ const registerClient = async (req, res) => {
     });
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
-    const cleanCpf = cpf.replace(/\D/g, '');
-    const [newClient] = await knex('clientes').insert(
+    const cleanCpf = cpf.replace(/\D/g, "");
+    const [newClient] = await knex("clientes").insert(
       {
         nome: name,
         email,
@@ -46,7 +46,7 @@ const registerClient = async (req, res) => {
         cidade: city,
         estado: state,
       },
-      '*',
+      "*",
     );
 
     return successRes.successResponse201(res, newClient);
@@ -77,8 +77,8 @@ const updateClient = async (req, res) => {
     );
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
-    const cleanCpf = cpf.replace(/\D/g, '');
-    const [newClient] = await knex('clientes').where({ id }).update(
+    const cleanCpf = cpf.replace(/\D/g, "");
+    const [newClient] = await knex("clientes").where({ id }).update(
       {
         nome: name,
         email,
@@ -90,7 +90,7 @@ const updateClient = async (req, res) => {
         cidade: city,
         estado: state,
       },
-      '*',
+      "*",
     );
 
     return successRes.successResponse200(res, newClient);
@@ -103,7 +103,7 @@ const getClient = async (req, res) => {
   const { id } = req.params;
   try {
     const client = await validations.validateIdClient(knex, id);
-    if (typeof client === 'string')
+    if (typeof client === "string")
       return errorRes.errorResponse404(res, client);
 
     return successRes.successResponse200(res, client);
@@ -114,7 +114,7 @@ const getClient = async (req, res) => {
 
 const listClients = async (req, res) => {
   try {
-    const clients = await knex('clientes').orderBy('id');
+    const clients = await knex("clientes").orderBy("id");
     return successRes.successResponse200(res, clients);
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);

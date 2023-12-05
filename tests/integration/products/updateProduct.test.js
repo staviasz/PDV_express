@@ -1,11 +1,11 @@
-const testServer = require('../../jest.setup');
-const dbConfig = require('../../../knexfile');
-const environment = process.env.NODE_ENV || 'development';
-const knex = require('knex')(dbConfig[environment]);
+const testServer = require("../../jest.setup");
+const dbConfig = require("../../../knexfile");
+const environment = process.env.NODE_ENV || "development";
+const knex = require("knex")(dbConfig[environment]);
 
 const routeTest = async (body) => {
   return testServer
-    .put('/produto/1')
+    .put("/produto/1")
     .set({
       Authorization: `${global.token}`,
     })
@@ -15,30 +15,30 @@ const routeTest = async (body) => {
 beforeAll(async () => {
   const productsMock = [
     {
-      descricao: 'productJest',
+      descricao: "productJest",
       quantidade_estoque: 10,
       valor: 100,
       categoria_id: 3,
     },
     {
-      descricao: 'productJest2',
+      descricao: "productJest2",
       quantidade_estoque: 11,
       valor: 100,
       categoria_id: 2,
     },
     {
-      descricao: 'productJest3',
+      descricao: "productJest3",
       quantidade_estoque: 12,
       valor: 100,
       categoria_id: 2,
     },
   ];
-  await knex('produtos').insert(productsMock);
+  await knex("produtos").insert(productsMock);
 });
 
-describe('Update products', () => {
-  it('should is authorized', async () => {
-    const response = await testServer.put('/produto:1').send({
+describe("Update products", () => {
+  it("should is authorized", async () => {
+    const response = await testServer.put("/produto:1").send({
       quantidade_estoque: 0,
       valor: 100,
       categoria_id: 0,
@@ -46,11 +46,11 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
-      mensagem: 'Usuario não autorizado',
+      mensagem: "Usuario não autorizado",
     });
   });
 
-  it('should is required field description', async () => {
+  it("should is required field description", async () => {
     const response = await routeTest({
       quantidade_estoque: 0,
       valor: 100,
@@ -59,13 +59,13 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo descrição é obrigatório',
+      mensagem: "O campo descrição é obrigatório",
     });
   });
 
-  it('should is not empty field description', async () => {
+  it("should is not empty field description", async () => {
     const response = await routeTest({
-      descricao: '',
+      descricao: "",
       quantidade_estoque: 0,
       valor: 100,
       categoria_id: 0,
@@ -73,13 +73,13 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo descrição é obrigatório',
+      mensagem: "O campo descrição é obrigatório",
     });
   });
 
-  it('should contain minimum 5 caracteres field description', async () => {
+  it("should contain minimum 5 caracteres field description", async () => {
     const response = await routeTest({
-      descricao: 'abcd',
+      descricao: "abcd",
       quantidade_estoque: 0,
       valor: 100,
       categoria_id: 0,
@@ -87,14 +87,14 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'A descrição deve conter entre 5 e 255 caracteres',
+      mensagem: "A descrição deve conter entre 5 e 255 caracteres",
     });
   });
 
-  it('should contain maximum 255 caracteres field description', async () => {
+  it("should contain maximum 255 caracteres field description", async () => {
     const response = await routeTest({
       descricao:
-        'abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz',
+        "abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz",
       quantidade_estoque: 0,
       valor: 100,
       categoria_id: 0,
@@ -102,11 +102,11 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'A descrição deve conter entre 5 e 255 caracteres',
+      mensagem: "A descrição deve conter entre 5 e 255 caracteres",
     });
   });
 
-  it('should not type number im field description', async () => {
+  it("should not type number im field description", async () => {
     const response = await routeTest({
       descricao: 1000,
       quantidade_estoque: 0,
@@ -116,40 +116,40 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'A descrição não deve conter numeros',
+      mensagem: "A descrição não deve conter numeros",
     });
   });
 
-  it('should is required field amount', async () => {
+  it("should is required field amount", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       valor: 100,
       categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo quantidade de estoque é obrigatório',
+      mensagem: "O campo quantidade de estoque é obrigatório",
     });
   });
 
-  it('should is number field amount', async () => {
+  it("should is number field amount", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
-      quantidade_estoque: 'teste',
+      descricao: "produto1",
+      quantidade_estoque: "teste",
       valor: 100,
       categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'A quantidade de estoque deve conter apenas numeros',
+      mensagem: "A quantidade de estoque deve conter apenas numeros",
     });
   });
 
-  it('should is a positive number field amount', async () => {
+  it("should is a positive number field amount", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: -5,
       valor: 100,
       categoria_id: 0,
@@ -157,13 +157,13 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo quantidade de estoque não permite numeros negativo',
+      mensagem: "O campo quantidade de estoque não permite numeros negativo",
     });
   });
 
-  it('should not is a float number field amount', async () => {
+  it("should not is a float number field amount", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: 5.5,
       valor: 100,
       categoria_id: 0,
@@ -172,40 +172,40 @@ describe('Update products', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
       mensagem:
-        'O campo quantidade de estoque não permite numeros com ponto flotuante',
+        "O campo quantidade de estoque não permite numeros com ponto flotuante",
     });
   });
 
-  it('should is required field value', async () => {
+  it("should is required field value", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: 100,
       categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo valor é obrigatório',
+      mensagem: "O campo valor é obrigatório",
     });
   });
 
-  it('should is number field value', async () => {
+  it("should is number field value", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: 100,
-      valor: 'teste',
+      valor: "teste",
       categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'A valor deve conter apenas numeros',
+      mensagem: "A valor deve conter apenas numeros",
     });
   });
 
-  it('should is a positive number field value', async () => {
+  it("should is a positive number field value", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: 5,
       valor: -100,
       categoria_id: 0,
@@ -213,13 +213,13 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo valor não permite numeros negativo',
+      mensagem: "O campo valor não permite numeros negativo",
     });
   });
 
-  it('should not is a float number field value', async () => {
+  it("should not is a float number field value", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: 5,
       valor: 100.5,
       categoria_id: 0,
@@ -228,13 +228,13 @@ describe('Update products', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
       mensagem:
-        'O campo valor não permite numeros com ponto flotuante, digite o valor em centavos',
+        "O campo valor não permite numeros com ponto flotuante, digite o valor em centavos",
     });
   });
 
-  it('should is a positive number field category_id', async () => {
+  it("should is a positive number field category_id", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: 5,
       valor: 100,
       categoria_id: 0,
@@ -242,13 +242,13 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo categoria_id não permite numeros negativo',
+      mensagem: "O campo categoria_id não permite numeros negativo",
     });
   });
 
-  it('should not is a float number field category_id', async () => {
+  it("should not is a float number field category_id", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: 5,
       valor: 100,
       categoria_id: 0.5,
@@ -256,40 +256,40 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo categoria_id não permite numeros com ponto flotuante',
+      mensagem: "O campo categoria_id não permite numeros com ponto flotuante",
     });
   });
 
-  it('should is required field category_id', async () => {
+  it("should is required field category_id", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: 100,
       valor: 100,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'O campo categoria_id é obrigatório',
+      mensagem: "O campo categoria_id é obrigatório",
     });
   });
 
-  it('should is number field category_id', async () => {
+  it("should is number field category_id", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: 100,
       valor: 100,
-      categoria_id: 'a',
+      categoria_id: "a",
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'A categoria_id deve conter apenas numeros',
+      mensagem: "A categoria_id deve conter apenas numeros",
     });
   });
 
-  it('should not exists category_id in table categorias', async () => {
+  it("should not exists category_id in table categorias", async () => {
     const response = await routeTest({
-      descricao: 'produto1',
+      descricao: "produto1",
       quantidade_estoque: 100,
       valor: 100,
       categoria_id: 50,
@@ -297,22 +297,22 @@ describe('Update products', () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: 'A categoria não encontrada',
+      mensagem: "A categoria não encontrada",
     });
   });
 
-  it('should success response', async () => {
+  it("should success response", async () => {
     const mockProduct = [
       {
         categoria_id: 1,
-        descricao: 'produto1Update',
+        descricao: "produto1Update",
         quantidade_estoque: 100,
         valor: 100,
       },
     ];
 
     const response = await testServer
-      .put('/produto/10')
+      .put("/produto/10")
       .set({
         Authorization: `${global.token}`,
       })
@@ -321,14 +321,14 @@ describe('Update products', () => {
     mockProduct[0].id = 1;
 
     expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual({ mensagem: 'Produto não cadastrado' });
+    expect(response.body).toEqual({ mensagem: "Produto não cadastrado" });
   });
 
-  it('should success response', async () => {
+  it("should success response", async () => {
     const mockProduct = [
       {
         categoria_id: 1,
-        descricao: 'produto1Update',
+        descricao: "produto1Update",
         quantidade_estoque: 100,
         valor: 100,
       },

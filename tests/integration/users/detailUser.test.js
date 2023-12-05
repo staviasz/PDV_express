@@ -1,8 +1,8 @@
-const testServer = require('../../jest.setup');
+const testServer = require("../../jest.setup");
 
 const routeTest = async (body) => {
   return testServer
-    .get('/usuario')
+    .get("/usuario")
     .set({
       Authorization: `${global.token}`,
       User: JSON.stringify({ id: 1 }),
@@ -10,18 +10,18 @@ const routeTest = async (body) => {
     .send(body);
 };
 
-describe('Detail users', () => {
-  it('should detail user', async () => {
+describe("Detail users", () => {
+  it("should detail user", async () => {
     const response = await routeTest({
-      email: 'teste@teste.com',
-      senha: '12345',
+      email: "teste@teste.com",
+      senha: "12345",
     });
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
       id: 1,
-      nome: 'testeJest',
-      email: 'teste@jest.com',
+      nome: "testeJest",
+      email: "teste@jest.com",
     });
   });
 });

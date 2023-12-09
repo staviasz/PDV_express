@@ -6,7 +6,7 @@ const knex = require("knex")(dbConfig[environment]);
 
 const errorRes = require("../utils/responses/errorResponse");
 const successRes = require("../utils/responses/successResponse");
-const validateProduct = require("../utils/validators/validateProduct");
+const validates = require("../utils/validators/validateProduct");
 
 const createProduct = async (req, res) => {
   const {
@@ -17,7 +17,7 @@ const createProduct = async (req, res) => {
   } = req.body;
 
   try {
-    const validProduct = await validateProduct(
+    const validProduct = await validates.validateProduct(
       knex,
       {
         description,
@@ -25,7 +25,7 @@ const createProduct = async (req, res) => {
         value,
         category_id,
       },
-      category_id,
+      category_id
     );
     if (validProduct) {
       return errorRes.errorResponse400(res, validProduct);
@@ -38,7 +38,7 @@ const createProduct = async (req, res) => {
         quantidade_estoque: amount,
         categoria_id: category_id,
       },
-      "*",
+      "*"
     );
 
     return successRes.successResponse201(res, product);
@@ -58,7 +58,7 @@ const updateProduct = async (req, res) => {
   } = req.body;
 
   try {
-    const validProduct = await validateProduct(
+    const validProduct = await validates.validateProduct(
       knex,
       {
         description,
@@ -67,7 +67,7 @@ const updateProduct = async (req, res) => {
         category_id,
       },
       category_id,
-      id,
+      id
     );
     if (typeof validProduct === "string") {
       return errorRes.errorResponse400(res, validProduct);
@@ -81,7 +81,7 @@ const updateProduct = async (req, res) => {
           quantidade_estoque: amount,
           categoria_id: category_id,
         },
-        "*",
+        "*"
       )
       .where({ id });
     return successRes.successResponse200(res, product);
@@ -116,7 +116,7 @@ const getProduct = async (req, res) => {
       if (!categoryExist) {
         return errorRes.errorResponse400(
           res,
-          "A categoria solicitada não existe",
+          "A categoria solicitada não existe"
         );
       }
       query.where({ categoria_id });
@@ -133,9 +133,9 @@ const getProduct = async (req, res) => {
 const delProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const response = await knex("produtos").where({ id }).del();
-    if (!response) {
-      return errorRes.errorResponse400(res, "Produto não encontrado.");
+    const response = await validates.validateDelProduct(knex, id);
+    if (response) {
+      return errorRes.errorResponse400(res, response);
     }
 
     return successRes.successResponse204(res);

@@ -13,7 +13,11 @@ routes.post(
   multer.single("produto_imagem"),
   products.createProduct,
 );
-routes.put("/produto/:id", products.updateProduct);
+routes.put(
+  "/produto/:id",
+  multer.single("produto_imagem"),
+  products.updateProduct,
+);
 routes.get("/produto/:id", products.detailProduct);
 routes.get("/produto", products.getProduct);
 routes.delete("/produto/:id", products.delProduct);

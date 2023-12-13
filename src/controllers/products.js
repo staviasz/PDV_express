@@ -65,7 +65,15 @@ const updateProduct = async (req, res) => {
     quantidade_estoque: amount,
     valor: value,
     categoria_id: category_id,
+    produto_imagem: productImage,
   } = req.body;
+
+  if (productImage) {
+    return errorRes.errorResponse404(
+      res,
+      "O campo produto imagem deve receber um arquivo",
+    );
+  }
 
   try {
     const validProduct = await validates.validateProduct(
@@ -83,6 +91,13 @@ const updateProduct = async (req, res) => {
       return errorRes.errorResponse400(res, validProduct);
     }
 
+    let imageUrl = null;
+    if (req.file) {
+      const { mimetype, originalname, buffer } = await validateImage(req.file);
+      const { Location } = await upload(originalname, buffer, mimetype);
+      imageUrl = Location;
+    }
+
     const product = await knex("produtos")
       .update(
         {
@@ -90,6 +105,7 @@ const updateProduct = async (req, res) => {
           valor: value,
           quantidade_estoque: amount,
           categoria_id: category_id,
+          produto_imagem: imageUrl,
         },
         "*",
       )

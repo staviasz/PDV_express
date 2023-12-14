@@ -7,6 +7,7 @@ const validateOrder = require("../utils/validators/validateOrder")
 
 const errorRes = require("../utils/responses/errorResponse");
 const successRes = require("../utils/responses/successResponse");
+const sendMail = require("../utils/emails/emailSend");
 
 
 const createOrder = async (req, res) => {
@@ -25,7 +26,7 @@ const createOrder = async (req, res) => {
         };
 
         const productValues = await trx('produtos')
-            .select('id', 'valor', 'quantidade_estoque')
+            .select('*')
             .whereIn('id', order_products.map(product => product.produto_id));
 
         const amounts = order_products.map((product) => {
@@ -61,7 +62,8 @@ const createOrder = async (req, res) => {
         };
 
         await trx.commit();
-        return successRes.successResponse201(res, order);
+        sendMail(order[0], orderProducts, productValues);
+        return successRes.successResponse201(res, order[0]);
 
     } catch (error) {
         await trx.rollback();

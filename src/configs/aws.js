@@ -1,9 +1,13 @@
 require("dotenv").config();
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} = require("@aws-sdk/client-s3");
 
 const s3Client = new S3Client({
   region: process.env.BUCKET_REGION,
-  endpoint: process.env.ENDPOINT_S3,
+  endpoint: `https://${process.env.ENDPOINT_S3}`,
   credentials: {
     accessKeyId: process.env.BUCKET_KEY,
     secretAccessKey: process.env.BUCKET_APP_KEY,
@@ -24,4 +28,13 @@ const upload = async (originalname, buffer, mimetype) => {
   return `https://${process.env.BUCKET_NAME}${process.env.ENDPOINT_RETURN}/${originalname}`;
 };
 
-module.exports = { upload };
+const del = async (path) => {
+  await s3Client.send(
+    new DeleteObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: path,
+    })
+  );
+};
+
+module.exports = { upload, del };

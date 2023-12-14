@@ -36,8 +36,7 @@ const createProduct = async (req, res) => {
     let imageUrl = null;
     if (req.file) {
       const { mimetype, originalname, buffer } = await validateImage(req.file);
-      const { Location } = await upload(originalname, buffer, mimetype);
-      imageUrl = Location;
+      imageUrl = await upload(originalname, buffer, mimetype);
     }
 
     const [product] = await knex("produtos").insert(
@@ -94,8 +93,7 @@ const updateProduct = async (req, res) => {
     let imageUrl = null;
     if (req.file) {
       const { mimetype, originalname, buffer } = await validateImage(req.file);
-      const { Location } = await upload(originalname, buffer, mimetype);
-      imageUrl = Location;
+      imageUrl = await upload(originalname, buffer, mimetype);
     }
 
     const product = await knex("produtos")

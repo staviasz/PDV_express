@@ -1,10 +1,9 @@
 require("dotenv").config();
-const aws = require("aws-sdk");
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
-const endpoint = new aws.Endpoint(process.env.ENDPOINT_S3);
-
-const S3 = new aws.S3({
-  endpoint,
+const s3Client = new S3Client({
+  region: process.env.BUCKET_REGION,
+  endpoint: process.env.ENDPOINT_S3,
   credentials: {
     accessKeyId: process.env.BUCKET_KEY,
     secretAccessKey: process.env.BUCKET_APP_KEY,
@@ -12,12 +11,17 @@ const S3 = new aws.S3({
 });
 
 const upload = async (originalname, buffer, mimetype) => {
-  return S3.upload({
+  const params = {
     Bucket: process.env.BUCKET_NAME,
     Key: originalname,
     Body: buffer,
     ContentType: mimetype,
-  }).promise();
+  };
+
+  const command = new PutObjectCommand(params);
+
+  await s3Client.send(command);
+  return `https://${process.env.BUCKET_NAME}${process.env.ENDPOINT_RETURN}/${originalname}`;
 };
 
-module.exports = { S3, upload };
+module.exports = { upload };

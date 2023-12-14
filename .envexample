@@ -3,3 +3,4 @@ BUCKET_NAME:bitbarbaros
 BUCKET_APP_KEY=K005xA0Qfjrf2FQdGgBHK0axEFSIvWw
 ENDPOINT_S3='s3.us-east-005.backblazeb2.com'
 BUCKET_REGION=us-east-005
+ENDPOINT_RETURN='.s3.us-east-005.backblazeb2.com'

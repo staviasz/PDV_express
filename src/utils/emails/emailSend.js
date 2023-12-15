@@ -17,7 +17,7 @@ const sendMail = async (order, orderProducts, productValue) => {
             image_url: item.produto_imagem || noImage,
             name: item.descricao,
             quantity: orderProduct ? orderProduct.quantidade_produto : 0,
-            price: item.valor
+            price: (item.valor/100).toFixed(2)
         };
     });
 
@@ -25,7 +25,7 @@ const sendMail = async (order, orderProducts, productValue) => {
         name_client: customer.nome,
         order_id: order.id,
         products,
-        total: order.valor_total,
+        total: (order.valor_total/100).toFixed(2),
         zip_code: customer.cep,
         road: customer.rua,
         city: customer.cidade,

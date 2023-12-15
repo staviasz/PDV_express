@@ -14,6 +14,9 @@ const schemaProduct = joi.object({
         "number.integer": "O campo quantidade_produto deve ser um número inteiro",
         "number.min": "O campo quantidade_produto deve ser pelo menos {#limit}"
     })
+}).messages({
+    "object.base": "Cada item em 'order_products' deve ser um objeto com 'produto_id' e 'quantidade_produto'",
+    "object.unknown": "Uma ou mais propriedades não são permitidas"
 });
 
 const schemaOrder = joi.object({
@@ -28,6 +31,9 @@ const schemaOrder = joi.object({
         "array.base": "O campo pedido_produtos deve ser um array",
         "array.empty": "O campo pedido_produtos é obrigatório",
         "array.min": "O campo pedido_produtos deve conter pelo menos {#limit} item"
+    }),
+    observation: joi.string().allow('').messages({
+        "string.base": "A descrição não deve conter numeros"
     })
 });
 

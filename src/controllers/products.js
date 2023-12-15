@@ -163,8 +163,14 @@ const delProduct = async (req, res) => {
     }
 
     if (product.produto_imagem) {
-      await del(product.produto_imagem);
+      const image = product.produto_imagem.replace(
+        `https://${process.env.BUCKET_NAME}${process.env.ENDPOINT_RETURN}/`,
+        ""
+      );
+
+      await del(image);
     }
+
     await knex("produtos").where({ id }).del();
 
     return successRes.successResponse204(res);

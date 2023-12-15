@@ -7,7 +7,7 @@ const knex = require("knex")(dbConfig[environment]);
 const errorRes = require("../utils/responses/errorResponse");
 const successRes = require("../utils/responses/successResponse");
 const validates = require("../utils/validators/validateProduct");
-const { upload } = require("../configs/aws");
+const { upload, del } = require("../configs/aws");
 const validateImage = require("../utils/validators/validateImage");
 
 const createProduct = async (req, res) => {
@@ -157,10 +157,21 @@ const getProduct = async (req, res) => {
 const delProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const response = await validates.validateDelProduct(knex, id);
-    if (response) {
-      return errorRes.errorResponse400(res, response);
+    const product = await validates.validateDelProduct(knex, id);
+    if (typeof product === "string") {
+      return errorRes.errorResponse400(res, product);
     }
+
+    if (product.produto_imagem) {
+      const image = product.produto_imagem.replace(
+        `https://${process.env.BUCKET_NAME}.${process.env.ENDPOINT_S3}/`,
+        ""
+      );
+
+      await del(image);
+    }
+
+    await knex("produtos").where({ id }).del();
 
     return successRes.successResponse204(res);
   } catch (error) {

@@ -2,9 +2,6 @@ const testServer = require("../../jest.setup");
 const dbConfig = require("../../../knexfile");
 const environment = process.env.NODE_ENV || "development";
 const knex = require("knex")(dbConfig[environment]);
-const sendMail = require("../../../src/utils/emails/emailSend");
-
-jest.mock("../../../src/utils/emails/emailSend");
 
 const productsMock = [
   {
@@ -78,16 +75,16 @@ describe("Create orders", () => {
     });
   });
 
-  // it("shoud be a positive number cliente_id", async () => {
-  //   const response = await routeTest({
-  //     cliente_id: -3,
-  //   });
+  it("shoud be a positive number cliente_id", async () => {
+    const response = await routeTest({
+      cliente_id: -3,
+    });
 
-  //   expect(response.statusCode).toBe(400);
-  //   expect(response.body).toEqual({
-  //     mensagem: "O campo cliente_id deve ser um número inteiro positivo",
-  //   });
-  // });
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: "O campo cliente_id deve ser um número inteiro positivo",
+    });
+  });
 
   it("shoud be required pedido_produtos", async () => {
     const response = await routeTest({
@@ -124,18 +121,18 @@ describe("Create orders", () => {
     });
   });
 
-  // it("shoud required object in array pedido_produtos", async () => {
-  //   const response = await routeTest({
-  //     cliente_id: 1,
-  //     pedido_produtos: [""],
-  //   });
+  it("shoud required object in array pedido_produtos", async () => {
+    const response = await routeTest({
+      cliente_id: 1,
+      pedido_produtos: [""],
+    });
 
-  //   expect(response.statusCode).toBe(400);
-  //   expect(response.body).toEqual({
-  //     mensagem:
-  //       "Pedido_produtos deve conter objetos de {produto_id, quantidade_produto}",
-  //   });
-  // });
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem:
+        "Pedido_produtos deve conter objetos de {produto_id, quantidade_produto}",
+    });
+  });
 
   it("shoud required produto_id in array pedido_produtos", async () => {
     const response = await routeTest({
@@ -173,17 +170,17 @@ describe("Create orders", () => {
     });
   });
 
-  // it("shoud be positive number produto_id in array pedido_produtos", async () => {
-  //   const response = await routeTest({
-  //     cliente_id: 1,
-  //     pedido_produtos: [{ produto_id: -5 }],
-  //   });
+  it("shoud be positive number produto_id in array pedido_produtos", async () => {
+    const response = await routeTest({
+      cliente_id: 1,
+      pedido_produtos: [{ produto_id: -5 }],
+    });
 
-  //   expect(response.statusCode).toBe(400);
-  //   expect(response.body).toEqual({
-  //     mensagem: "O campo produto_id deve ser um número inteiro positivo",
-  //   });
-  // });
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: "O campo produto_id deve ser um número inteiro positivo",
+    });
+  });
 
   it("shoud be required quantidade_produto in array pedido_produtos", async () => {
     const response = await routeTest({
@@ -233,45 +230,45 @@ describe("Create orders", () => {
     });
   });
 
-  // it("shoud not be empty field observation if sent", async () => {
-  //   const response = await routeTest({
-  //     cliente_id: 1,
-  //     observacao: "",
-  //     pedido_produtos: [{ produto_id: 5, quantidade_produto: 2 }],
-  //   });
+  it("shoud not be empty field observation if sent", async () => {
+    const response = await routeTest({
+      cliente_id: 1,
+      observacao: "",
+      pedido_produtos: [{ produto_id: 5, quantidade_produto: 2 }],
+    });
 
-  //   expect(response.statusCode).toBe(400);
-  //   expect(response.body).toEqual({
-  //     mensagem: "O campo observação não deve estar vazio",
-  //   });
-  // });
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: "O campo observação não deve estar vazio",
+    });
+  });
 
-  // it("shoud not be number field observation if sent", async () => {
-  //   const response = await routeTest({
-  //     cliente_id: 1,
-  //     observacao: 0,
-  //     pedido_produtos: [{ produto_id: 5, quantidade_produto: 2 }],
-  //   });
+  it("shoud not be number field observation if sent", async () => {
+    const response = await routeTest({
+      cliente_id: 1,
+      observacao: 0,
+      pedido_produtos: [{ produto_id: 5, quantidade_produto: 2 }],
+    });
 
-  //   expect(response.statusCode).toBe(400);
-  //   expect(response.body).toEqual({
-  //     mensagem: "O campo observação deve ser um texto",
-  //   });
-  // });
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: "O campo observação deve ser um texto",
+    });
+  });
 
-  // it("shoud be maximun 255 caractere in the field observation if sent", async () => {
-  //   const response = await routeTest({
-  //     cliente_id: 1,
-  //     observacao:
-  //       "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789",
-  //     pedido_produtos: [{ produto_id: 5, quantidade_produto: 2 }],
-  //   });
+  it("shoud be maximun 255 caractere in the field observation if sent", async () => {
+    const response = await routeTest({
+      cliente_id: 1,
+      observacao:
+        "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789",
+      pedido_produtos: [{ produto_id: 5, quantidade_produto: 2 }],
+    });
 
-  //   expect(response.statusCode).toBe(400);
-  //   expect(response.body).toEqual({
-  //     mensagem: "O campo observação pode conter até 255 caracteres",
-  //   });
-  // });
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: "O campo observação pode conter até 255 caracteres",
+    });
+  });
 
   it("shoud client exists", async () => {
     const response = await routeTest({
@@ -326,11 +323,12 @@ describe("Create orders", () => {
   });
 
   it("shoud sucess create order without observation", async () => {
+    const [productOneBefore, productTwoBefore] = await knex("produtos");
     const mock = {
       cliente_id: 1,
       pedido_produtos: [
-        { produto_id: 1, quantidade_produto: 2 },
-        { produto_id: 2, quantidade_produto: 5 },
+        { produto_id: productOneBefore.id, quantidade_produto: 2 },
+        { produto_id: productTwoBefore.id, quantidade_produto: 5 },
       ],
     };
 
@@ -351,6 +349,15 @@ describe("Create orders", () => {
 
     expect(response.statusCode).toBe(201);
     expect(response.body).toEqual(responseBody);
-    expect(sendMail).toHaveBeenCalled();
+
+    const [productOneAfter, productTwoAfter] = await knex("produtos");
+    const [pedidoProdutoOne, pedidoProdutoTwo] = pedido_produtos;
+
+    expect(productOneAfter.quantidade_estoque).toEqual(
+      productOneBefore.quantidade_estoque - pedidoProdutoOne.quantidade_produto,
+    );
+    expect(productTwoAfter.quantidade_estoque).toEqual(
+      productTwoBefore.quantidade_estoque - pedidoProdutoTwo.quantidade_produto,
+    );
   });
 });

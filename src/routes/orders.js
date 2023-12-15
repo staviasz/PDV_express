@@ -7,5 +7,6 @@ const routes = Router();
 
 routes.use(verifyLogin);
 routes.post("/pedido", orders.createOrder);
+routes.get("/pedido", orders.listOrder);
 
 module.exports = routes;

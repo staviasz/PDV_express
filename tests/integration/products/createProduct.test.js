@@ -9,7 +9,7 @@ const routeTest = async (body) => {
     .send(body);
 };
 
-describe("Categories", () => {
+describe("Create Products", () => {
   it("should is authorized", async () => {
     const response = await testServer.post("/produto").send({
       quantidade_estoque: 0,
@@ -275,18 +275,22 @@ describe("Categories", () => {
   });
 
   it("should success response", async () => {
-    const mockProduct = {
-      descricao: "produto1",
-      quantidade_estoque: 100,
-      valor: 100,
-      categoria_id: 1,
-    };
+    const mockProduct = [
+      {
+        descricao: "produto1",
+        quantidade_estoque: 100,
+        valor: 100,
+        categoria_id: 1,
+      },
+    ];
+    mockProduct[0].id = 1;
+    mockProduct[0].produto_imagem = null;
 
     mockProduct.id = 1;
     mockProduct.produto_imagem = null;
 
     const response = await routeTest(mockProduct);
     expect(response.statusCode).toBe(201);
-    expect(response.body).toEqual(mockProduct);
+    expect(response.body).toEqual(mockProduct[0]);
   });
 });

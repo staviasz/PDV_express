@@ -1,13 +1,17 @@
 const schemaOrder = require("../schemas/schemaOrder");
 const validateSchema = require("./validateSchema");
 
-const validateOrder = async (database, { customer_id, order_products }) => {
-  const errorSchema = await validateSchema(schemaOrder)({
+const validateOrder = async (
+  database,
+  { customer_id, order_products, observation },
+) => {
+  const errorSchema = schemaOrder.validate({
     customer_id,
     order_products,
+    observation,
   });
-  if (errorSchema) {
-    return errorSchema;
+  if (errorSchema.error) {
+    return errorSchema.error.details[0].message;
   }
 
   const clienteExist = await database("clientes")
@@ -36,8 +40,15 @@ const validateOrder = async (database, { customer_id, order_products }) => {
       return `Quantidade insuficiente em estoque para o produto com id ${produto_id} / ${produtoExist.descricao}`;
     }
   }
-
-  return;
 };
 
-module.exports = validateOrder;
+const validadeListOrder = async (customer_id) => {
+  if (isNaN(customer_id) && customer_id !== undefined) {
+    return "O cliente_id tem que ser um número";
+  }
+};
+
+module.exports = {
+  validateOrder,
+  validadeListOrder,
+};

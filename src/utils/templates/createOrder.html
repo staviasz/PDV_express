@@ -1,184 +1,194 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmação de Pedido</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Confirmação de Pedido</title>
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-	<style>
-		body {
-			font-family: 'Roboto', sans-serif;
-			margin: 0;
-			padding: 0;
-			background-color: #f4f4f4;
-		}
+      .container {
+        max-width: 800px;
+        margin: 40px auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
 
-		.container {
-			max-width: 800px;
-			margin: 40px auto;
-			background-color: #fff;
-			padding: 20px;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-			border-radius: 10px;
-		}
+      .dados {
+        display: flex;
+        justify-content: space-around;
+      }
 
-		.dados {
-			display: flex;
-			justify-content: space-around;
-		}
+      .dados-pagamento {
+        padding: 20px;
+        flex: 1;
+      }
 
-		.dados-pagamento {
-			padding: 20px;
-			flex: 1;
-		}
+      .dados-entrega {
+        padding: 20px;
+        flex: 1;
+      }
 
-		.dados-entrega {
-			padding: 20px;
-			flex: 1;
-		}
+      .frete {
+        text-align: right;
+      }
 
-		.frete {
-			text-align: right;
-		}
+      h1,
+      h4 {
+        color: #4caf50;
+        text-align: center;
+        margin-bottom: 0;
+      }
 
-		h1,
-		h4 {
-			color: #4caf50;
-			text-align: center;
-			margin-bottom: 0;
-		}
+      h4 {
+        margin-bottom: 40px;
+        margin-top: 10px;
+      }
 
-		h4 {
-			margin-bottom: 40px;
-			margin-top: 10px;
-		}
+      p {
+        color: #666;
+        line-height: 1.6;
+      }
 
-		p {
-			color: #666;
-			line-height: 1.6;
-		}
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
 
-		table {
-			width: 100%;
-			border-collapse: collapse;
-			margin-top: 20px;
-		}
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
 
-		th,
-		td {
-			border: 1px solid #ddd;
-			padding: 12px;
-			text-align: left;
-		}
+      th {
+        background-color: #f2f2f2;
+      }
 
-		th {
-			background-color: #f2f2f2;
-		}
+      tr:hover {
+        background-color: #f5f5f5;
+      }
 
-		tr:hover {
-			background-color: #f5f5f5;
-		}
+      .footer {
+        margin-top: 20px;
+        text-align: center;
+        color: #555;
+        background-color: #f8f8f8;
+        padding: 20px;
+        border-radius: 5px;
+      }
 
-		.footer {
-			margin-top: 20px;
-			text-align: center;
-			color: #555;
-			background-color: #f8f8f8;
-			padding: 20px;
-			border-radius: 5px;
-		}
+      a {
+        color: #ffffff;
+        text-decoration: none;
+      }
 
-		a {
-			color: #ffffff;
-			text-decoration: none;
-		}
+      a:hover {
+        text-decoration: underline;
+      }
 
-		a:hover {
-			text-decoration: underline;
-		}
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 24px;
+        margin-top: 20px;
+        background-color: #4caf50;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
 
-		.cta-button {
-			display: inline-flex;
-			align-items: center;
-			padding: 12px 24px;
-			margin-top: 20px;
-			background-color: #4caf50;
-			color: #fff;
-			text-decoration: none;
-			border-radius: 5px;
-			transition: background-color 0.3s ease;
-		}
+      .cta-button:hover {
+        background-color: #45a049;
+      }
 
-		.cta-button:hover {
-			background-color: #45a049;
-		}
+      .icon {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+      }
 
-		.icon {
-			width: 20px;
-			height: 20px;
-			margin-left: 5px;
-		}
+      @media screen and (max-width: 600px) {
+        .container {
+          padding: 10px;
+        }
 
-		@media screen and (max-width: 600px) {
-			.container {
-				padding: 10px;
-			}
+        table {
+          font-size: 14px;
+        }
 
-			table {
-				font-size: 14px;
-			}
+        .cta-button {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
 
-			.cta-button {
-				font-size: 14px;
-			}
-		}
-	</style>
+  <body>
+    <div class="container">
+      <h1>PEDIDO REALIZADO</h1>
+      <h4><strong>#{{order_id}}</strong></h4>
+      <p>
+        Olá {{name_client}},<br />
+        O pedido {{order_id}} foi realizado com sucesso!
+      </p>
 
-</head>
+      <h3>Resumo do Pedido:</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Preço Unitário</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each products}}
+          <tr>
+            <td>
+              <img
+                src="{{this.image_url}}"
+                alt="Imagem do Produto"
+                width="50"
+              />
+            </td>
+            <td>{{this.name}}</td>
+            <td>{{this.quantity}}</td>
+            <td>R$ {{this.price}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" style="text-align: right">
+              <strong>Valor:</strong>
+            </td>
+            <td>R$ {{total}}</td>
+          </tr>
+        </tfoot>
+      </table>
+      <div class="frete">
+        <p>Frete: <strong>R$ 00,00 </strong></p>
+        <p>Desconto: <strong>R$ 00,00 </strong></p>
+        <p>Total da compra: <strong>R$ {{total}} </strong></p>
+      </div>
 
-<body>
-	<div class="container">
-		<h1>PEDIDO REALIZADO</h1>
-		<h4><strong>#{{order_id}}</strong></h4>
-		<p>Olá {{name_client}},<br>
-			O pedido {{order_id}} foi realizado com sucesso!
-		</p>
-
-		<h3>Resumo do Pedido:</h3>
-		<table>
-			<thead>
-				<tr>
-					<th>Produto</th>
-					<th>Descrição</th>
-					<th>Quantidade</th>
-					<th>Preço Unitário</th>
-				</tr>
-			</thead>
-			<tbody>
-				{{#each products}}
-				<tr>
-					<td><img src="{{this.image_url}}" alt="Imagem do Produto" width="50"></td>
-					<td>{{this.name}}</td>
-					<td>{{this.quantity}}</td>
-					<td>R$ {{this.price}}</td>
-				</tr>
-				{{/each}}
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="3" style="text-align: right;"><strong>Valor:</strong></td>
-					<td>R$ {{total}}</td>
-				</tr>
-			</tfoot>
-		</table>
-		<div class="frete">
-			<p>Frete: <strong>R$ 00,00 </strong></p>
-			<p>Desconto: <strong>R$ 00,00 </strong></p>
-			<p>Total da compra: <strong>R$ {{total}} </strong></p>
-		</div>
-
-		<!-- <div class="dados">
+      <!-- <div class="dados">
 			<div class="dados-pagamento">
 				<h3>Dados de Pagamento</h3>
 				<p><strong>Forma de pagamento:</strong> Cartão de Crédito</p>
@@ -197,14 +207,24 @@
 			</div>
 		</div> -->
 
-		<p>Estamos processando seu pedido e você será notificado assim que for despachado.</p>
+      <p>
+        Estamos processando seu pedido e você será notificado assim que for
+        despachado.
+      </p>
 
-		<div class="footer">
-			<p>Entre em contato conosco se precisar de assistência: <br> <strong>suporte@bitbarbaros.tech</strong></p>
-			<a href="#" class="cta-button">Acompanhar Pedido <img
-					src="https://img.icons8.com/ios-glyphs/30/ffffff/rocket--v1.png" class="icon" alt="Ícone de foguete"></a>
-		</div>
-	</div>
-</body>
-
+      <div class="footer">
+        <p>
+          Entre em contato conosco se precisar de assistência: <br />
+          <strong>suporte@bitbarbaros.tech</strong>
+        </p>
+        <a href="#" class="cta-button"
+          >Acompanhar Pedido
+          <img
+            src="https://img.icons8.com/ios-glyphs/30/ffffff/rocket--v1.png"
+            class="icon"
+            alt="Ícone de foguete"
+        /></a>
+      </div>
+    </div>
+  </body>
 </html>

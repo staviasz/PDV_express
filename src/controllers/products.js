@@ -7,6 +7,8 @@ const knex = require("knex")(dbConfig[environment]);
 const errorRes = require("../utils/responses/errorResponse");
 const successRes = require("../utils/responses/successResponse");
 const validates = require("../utils/validators/validateProduct");
+const { upload } = require("../configs/aws");
+const validateImage = require("../utils/validators/validateImage");
 
 const createProduct = async (req, res) => {
   const {
@@ -26,9 +28,16 @@ const createProduct = async (req, res) => {
         category_id,
       },
       category_id,
+      category_id,
     );
     if (validProduct) {
       return errorRes.errorResponse400(res, validProduct);
+    }
+
+    let imageUrl = null;
+    if (req.file) {
+      const { mimetype, originalname, buffer } = await validateImage(req.file);
+      imageUrl = await upload(originalname, buffer, mimetype);
     }
 
     const [product] = await knex("produtos").insert(
@@ -37,6 +46,7 @@ const createProduct = async (req, res) => {
         valor: value,
         quantidade_estoque: amount,
         categoria_id: category_id,
+        produto_imagem: imageUrl,
       },
       "*",
     );
@@ -55,7 +65,15 @@ const updateProduct = async (req, res) => {
     quantidade_estoque: amount,
     valor: value,
     categoria_id: category_id,
+    produto_imagem: productImage,
   } = req.body;
+
+  if (productImage) {
+    return errorRes.errorResponse404(
+      res,
+      "O campo produto imagem deve receber um arquivo",
+    );
+  }
 
   try {
     const validProduct = await validates.validateProduct(
@@ -73,6 +91,12 @@ const updateProduct = async (req, res) => {
       return errorRes.errorResponse400(res, validProduct);
     }
 
+    let imageUrl = null;
+    if (req.file) {
+      const { mimetype, originalname, buffer } = await validateImage(req.file);
+      imageUrl = await upload(originalname, buffer, mimetype);
+    }
+
     const [product] = await knex("produtos")
       .update(
         {
@@ -80,6 +104,7 @@ const updateProduct = async (req, res) => {
           valor: value,
           quantidade_estoque: amount,
           categoria_id: category_id,
+          produto_imagem: imageUrl,
         },
         "*",
       )

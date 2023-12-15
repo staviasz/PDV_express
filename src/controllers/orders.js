@@ -3,7 +3,7 @@ require("dotenv").config();
 const dbConfig = require("../../knexfile");
 const environment = process.env.NODE_ENV || "development";
 const knex = require("knex")(dbConfig[environment]);
-const validateOrder = require("../utils/validators/validateOrder")
+const validates = require("../utils/validators/validateOrder")
 
 const errorRes = require("../utils/responses/errorResponse");
 const successRes = require("../utils/responses/successResponse");
@@ -20,7 +20,7 @@ const createOrder = async (req, res) => {
             observacao: observation,
         } = req.body;
 
-        const errorOrder = await validateOrder(knex, { customer_id, order_products });
+        const errorOrder = await validates.validateOrder(knex, { customer_id, order_products });
         if (errorOrder) {
             return errorRes.errorResponse400(res, errorOrder);
         };
@@ -71,6 +71,72 @@ const createOrder = async (req, res) => {
     }
 };
 
+const listOrder = async (req, res) => {
+    const { cliente_id: customer_id } = req.query;
+
+    const errorOrder = await validates.validadeListOrder(customer_id);
+    if (errorOrder) return errorRes.errorResponse400(res, errorOrder);
+
+    try {
+        let query = knex('pedidos')
+            .select(
+                'pedidos.id as pedido_id',
+                'pedidos.valor_total',
+                'pedidos.observacao',
+                'pedidos.cliente_id',
+                'pedido_produtos.id as produto_id',
+                'pedido_produtos.quantidade_produto',
+                'pedido_produtos.valor_produto',
+                'pedido_produtos.pedido_id as produto_pedido_id',
+                'pedido_produtos.produto_id'
+            )
+            .leftJoin('pedido_produtos', 'pedidos.id', 'pedido_produtos.pedido_id');
+
+        if (customer_id) {
+            query = query.where({ 'pedidos.cliente_id': customer_id });
+        }
+
+        const orders = await query;
+        if (!orders.length) {
+            return errorRes.errorResponse400(res, `Cliente com ID ${customer_id} não foi localizado`)
+        }
+
+        const formattedOrders = orders.reduce((acc, order) => {
+            const existingOrder = acc.find(item => item.pedido.id === order.pedido_id);
+
+            const pedido_produto = {
+                id: order.produto_id,
+                quantidade_produto: order.quantidade_produto,
+                valor_produto: order.valor_produto,
+                pedido_id: order.produto_pedido_id,
+                produto_id: order.produto_id
+            };
+
+            if (existingOrder) {
+                existingOrder.pedido_produtos.push(pedido_produto);
+            } else {
+                acc.push({
+                    pedido: {
+                        id: order.pedido_id,
+                        valor_total: order.valor_total,
+                        observacao: order.observacao,
+                        cliente_id: order.cliente_id
+                    },
+                    pedido_produtos: [pedido_produto]
+                });
+            }
+
+            return acc;
+        }, []);
+
+        return res.json(formattedOrders);
+    } catch (error) {
+        return errorRes.errorResponse500(res, error.message)
+    }
+}
+
+
 module.exports = {
-    createOrder
+    createOrder,
+    listOrder
 };

@@ -7,7 +7,7 @@ const knex = require("knex")(dbConfig[environment]);
 const errorRes = require("../utils/responses/errorResponse");
 const successRes = require("../utils/responses/successResponse");
 const validates = require("../utils/validators/validateProduct");
-const { upload } = require("../configs/aws");
+const { upload, del } = require("../configs/aws");
 const validateImage = require("../utils/validators/validateImage");
 
 const createProduct = async (req, res) => {
@@ -27,7 +27,7 @@ const createProduct = async (req, res) => {
         value,
         category_id,
       },
-      category_id,
+      category_id
     );
     if (validProduct) {
       return errorRes.errorResponse400(res, validProduct);
@@ -47,7 +47,7 @@ const createProduct = async (req, res) => {
         categoria_id: category_id,
         produto_imagem: imageUrl,
       },
-      "*",
+      "*"
     );
 
     return successRes.successResponse201(res, product);
@@ -70,7 +70,7 @@ const updateProduct = async (req, res) => {
   if (productImage) {
     return errorRes.errorResponse404(
       res,
-      "O campo produto imagem deve receber um arquivo",
+      "O campo produto imagem deve receber um arquivo"
     );
   }
 
@@ -84,7 +84,7 @@ const updateProduct = async (req, res) => {
         category_id,
       },
       category_id,
-      id,
+      id
     );
     if (typeof validProduct === "string") {
       return errorRes.errorResponse400(res, validProduct);
@@ -105,7 +105,7 @@ const updateProduct = async (req, res) => {
           categoria_id: category_id,
           produto_imagem: imageUrl,
         },
-        "*",
+        "*"
       )
       .where({ id });
     return successRes.successResponse200(res, product);
@@ -140,7 +140,7 @@ const getProduct = async (req, res) => {
       if (!categoryExist) {
         return errorRes.errorResponse400(
           res,
-          "A categoria solicitada não existe",
+          "A categoria solicitada não existe"
         );
       }
       query.where({ categoria_id });
@@ -157,10 +157,21 @@ const getProduct = async (req, res) => {
 const delProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const response = await validates.validateDelProduct(knex, id);
-    if (response) {
-      return errorRes.errorResponse400(res, response);
+    const product = await validates.validateDelProduct(knex, id);
+    if (typeof product === "string") {
+      return errorRes.errorResponse400(res, product);
     }
+
+    if (product.produto_imagem) {
+      const image = product.produto_imagem.replace(
+        `https://${process.env.BUCKET_NAME}.${process.env.ENDPOINT_S3}/`,
+        ""
+      );
+
+      await del(image);
+    }
+
+    await knex("produtos").where({ id }).del();
 
     return successRes.successResponse204(res);
   } catch (error) {

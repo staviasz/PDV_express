@@ -5,7 +5,7 @@ const validateProduct = async (
   database,
   schemaValues,
   categoryId,
-  productId = null,
+  productId = null
 ) => {
   const errorSchema = await validateSchema(schemaProduct)(schemaValues);
   if (errorSchema) return errorSchema;
@@ -31,10 +31,13 @@ const validateDelProduct = async (database, productId) => {
   if (orderedProduct) {
     return "O produto está vinculado a um pedido e não pode ser excluído.";
   }
-  const response = await database("produtos").where({ id: productId }).del();
-  if (!response) {
+
+  const product = await database("produtos").where({ id: productId }).first();
+  if (!product) {
     return "Produto não encontrado.";
   }
+
+  return product;
 };
 
 module.exports = { validateProduct, validateDelProduct };

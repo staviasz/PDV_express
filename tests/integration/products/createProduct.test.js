@@ -4,7 +4,7 @@ const routeTest = async (body) => {
   return testServer
     .post("/produto")
     .set({
-      Authorization: `${global.token}`,
+      Authorization: `${global.token}`
     })
     .send(body);
 };
@@ -14,12 +14,12 @@ describe("Create Products", () => {
     const response = await testServer.post("/produto").send({
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
-      mensagem: "Usuario não autorizado",
+      mensagem: "Usuario não autorizado"
     });
   });
 
@@ -27,12 +27,12 @@ describe("Create Products", () => {
     const response = await routeTest({
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo descrição é obrigatório",
+      mensagem: "O campo descrição é obrigatório"
     });
   });
 
@@ -41,12 +41,12 @@ describe("Create Products", () => {
       descricao: "",
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo descrição é obrigatório",
+      mensagem: "O campo descrição é obrigatório"
     });
   });
 
@@ -55,12 +55,12 @@ describe("Create Products", () => {
       descricao: "abcd",
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A descrição deve conter entre 5 e 255 caracteres",
+      mensagem: "A descrição deve conter entre 5 e 255 caracteres"
     });
   });
 
@@ -70,12 +70,12 @@ describe("Create Products", () => {
         "abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz",
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A descrição deve conter entre 5 e 255 caracteres",
+      mensagem: "A descrição deve conter entre 5 e 255 caracteres"
     });
   });
 
@@ -84,12 +84,12 @@ describe("Create Products", () => {
       descricao: 1000,
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A descrição não deve conter numeros",
+      mensagem: "A descrição não deve conter numeros"
     });
   });
 
@@ -97,12 +97,12 @@ describe("Create Products", () => {
     const response = await routeTest({
       descricao: "produto1",
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo quantidade de estoque é obrigatório",
+      mensagem: "O campo quantidade de estoque é obrigatório"
     });
   });
 
@@ -111,12 +111,12 @@ describe("Create Products", () => {
       descricao: "produto1",
       quantidade_estoque: "teste",
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A quantidade de estoque deve conter apenas numeros",
+      mensagem: "A quantidade de estoque deve conter apenas numeros"
     });
   });
 
@@ -125,12 +125,12 @@ describe("Create Products", () => {
       descricao: "produto1",
       quantidade_estoque: -5,
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo quantidade de estoque não permite numeros negativo",
+      mensagem: "O campo quantidade de estoque não permite numeros negativo"
     });
   });
 
@@ -139,13 +139,13 @@ describe("Create Products", () => {
       descricao: "produto1",
       quantidade_estoque: 5.5,
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
       mensagem:
-        "O campo quantidade de estoque não permite numeros com ponto flotuante",
+        "O campo quantidade de estoque não permite numeros com ponto flotuante"
     });
   });
 
@@ -153,12 +153,12 @@ describe("Create Products", () => {
     const response = await routeTest({
       descricao: "produto1",
       quantidade_estoque: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo valor é obrigatório",
+      mensagem: "O campo valor é obrigatório"
     });
   });
 
@@ -167,12 +167,12 @@ describe("Create Products", () => {
       descricao: "produto1",
       quantidade_estoque: 100,
       valor: "teste",
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A valor deve conter apenas numeros",
+      mensagem: "A valor deve conter apenas numeros"
     });
   });
 
@@ -181,12 +181,12 @@ describe("Create Products", () => {
       descricao: "produto1",
       quantidade_estoque: 5,
       valor: -100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo valor não permite numeros negativo",
+      mensagem: "O campo valor não permite numeros negativo"
     });
   });
 
@@ -195,13 +195,13 @@ describe("Create Products", () => {
       descricao: "produto1",
       quantidade_estoque: 5,
       valor: 100.5,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
       mensagem:
-        "O campo valor não permite numeros com ponto flotuante, digite o valor em centavos",
+        "O campo valor não permite numeros com ponto flotuante, digite o valor em centavos"
     });
   });
 
@@ -210,12 +210,12 @@ describe("Create Products", () => {
       descricao: "produto1",
       quantidade_estoque: 5,
       valor: 100,
-      categoria_id: 0,
+      categoria_id: 0
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo categoria_id não permite numeros negativo",
+      mensagem: "O campo categoria_id não permite numeros negativo"
     });
   });
 
@@ -224,12 +224,12 @@ describe("Create Products", () => {
       descricao: "produto1",
       quantidade_estoque: 5,
       valor: 100,
-      categoria_id: 0.5,
+      categoria_id: 0.5
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo categoria_id não permite numeros com ponto flotuante",
+      mensagem: "O campo categoria_id não permite numeros com ponto flotuante"
     });
   });
 
@@ -237,12 +237,12 @@ describe("Create Products", () => {
     const response = await routeTest({
       descricao: "produto1",
       quantidade_estoque: 100,
-      valor: 100,
+      valor: 100
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo categoria_id é obrigatório",
+      mensagem: "O campo categoria_id é obrigatório"
     });
   });
 
@@ -251,12 +251,12 @@ describe("Create Products", () => {
       descricao: "produto1",
       quantidade_estoque: 100,
       valor: 100,
-      categoria_id: "a",
+      categoria_id: "a"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A categoria_id deve conter apenas numeros",
+      mensagem: "A categoria_id deve conter apenas numeros"
     });
   });
 
@@ -265,32 +265,28 @@ describe("Create Products", () => {
       descricao: "produto1",
       quantidade_estoque: 100,
       valor: 100,
-      categoria_id: 50,
+      categoria_id: 50
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A categoria não encontrada",
+      mensagem: "A categoria não encontrada"
     });
   });
 
   it("should success response", async () => {
-    const mockProduct = [
-      {
-        descricao: "produto1",
-        quantidade_estoque: 100,
-        valor: 100,
-        categoria_id: 1,
-      },
-    ];
-    mockProduct[0].id = 1;
-    mockProduct[0].produto_imagem = null;
+    const mockProduct = {
+      descricao: "produto1",
+      quantidade_estoque: 100,
+      valor: 100,
+      categoria_id: 1
+    };
 
     mockProduct.id = 1;
     mockProduct.produto_imagem = null;
 
     const response = await routeTest(mockProduct);
     expect(response.statusCode).toBe(201);
-    expect(response.body).toEqual(mockProduct[0]);
+    expect(response.body).toEqual(mockProduct);
   });
 });

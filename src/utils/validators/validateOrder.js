@@ -1,14 +1,13 @@
 const schemaOrder = require("../schemas/schemaOrder");
-const validateSchema = require("./validateSchema");
 
 const validateOrder = async (
   database,
-  { customer_id, order_products, observation },
+  { customer_id, order_products, observation }
 ) => {
   const errorSchema = schemaOrder.validate({
     customer_id,
     order_products,
-    observation,
+    observation
   });
   if (errorSchema.error) {
     return errorSchema.error.details[0].message;
@@ -50,5 +49,5 @@ const validadeListOrder = async (customer_id) => {
 
 module.exports = {
   validateOrder,
-  validadeListOrder,
+  validadeListOrder
 };

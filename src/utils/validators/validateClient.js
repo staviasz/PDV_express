@@ -18,7 +18,7 @@ const validateClient = async (database, schemaValues, id = null) => {
     const promisses = [
       database("clientes").where({ email }).whereNot({ id }).first(),
       database("clientes").where({ cpf: cleanCpf }).whereNot({ id }).first(),
-      validateIdClient(database, id),
+      validateIdClient(database, id)
     ];
     const [emailExists, cpfExists, clientExist] = await Promise.all(promisses);
 

@@ -16,8 +16,8 @@ const transporter = nodemailer.createTransport({
   port: process.env.MAIL_PORT,
   auth: {
     user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-  },
+    pass: process.env.MAIL_PASS
+  }
 });
 
 const send = (to, html, order_id) => {
@@ -25,11 +25,11 @@ const send = (to, html, order_id) => {
     from: `BitBárbaros Team 10<${process.env.MAIL_FROM}>`,
     to,
     subject: `Confirmação de Pedido #${order_id}`,
-    html,
+    html
   });
 };
 
 module.exports = {
   send,
-  compiladorHtml,
+  compiladorHtml
 };

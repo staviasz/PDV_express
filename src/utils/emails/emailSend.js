@@ -16,7 +16,7 @@ const sendMail = async (order, orderProducts, productValue) => {
       image_url: item.produto_imagem || noImage,
       name: item.descricao,
       quantity: orderProduct ? orderProduct.quantidade_produto : 0,
-      price: (item.valor / 100).toFixed(2),
+      price: (item.valor / 100).toFixed(2)
     };
   });
 
@@ -30,12 +30,12 @@ const sendMail = async (order, orderProducts, productValue) => {
     city: customer.cidade,
     house_number: customer.numero,
     state: customer.estado,
-    neighborhood: customer.bairro,
+    neighborhood: customer.bairro
   };
 
   const html = await email.compiladorHtml(
     "./src/utils/templates/createOrder.html",
-    context,
+    context
   );
   const to = customer.email;
 

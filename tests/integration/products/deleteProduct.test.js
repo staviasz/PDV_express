@@ -5,7 +5,7 @@ const knex = require("knex")(dbConfig[environment]);
 
 const routeTest = async (id) => {
   return testServer.delete(`/produto/${id}`).set({
-    Authorization: `${global.token}`,
+    Authorization: `${global.token}`
   });
 };
 const productsMock = [
@@ -13,20 +13,20 @@ const productsMock = [
     descricao: "productJest",
     quantidade_estoque: 10,
     valor: 100,
-    categoria_id: 3,
+    categoria_id: 3
   },
   {
     descricao: "productJest2",
     quantidade_estoque: 11,
     valor: 100,
-    categoria_id: 2,
+    categoria_id: 2
   },
   {
     descricao: "productJest3",
     quantidade_estoque: 12,
     valor: 100,
-    categoria_id: 2,
-  },
+    categoria_id: 2
+  }
 ];
 beforeAll(async () => {
   await knex("produtos").insert(productsMock);
@@ -38,7 +38,7 @@ describe("Delete products", () => {
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
-      mensagem: "Usuario não autorizado",
+      mensagem: "Usuario não autorizado"
     });
   });
 

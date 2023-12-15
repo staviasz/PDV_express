@@ -8,27 +8,27 @@ module.exports = {
       user: process.env.PG_USER,
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
-      port: process.env.PG_PORT,
+      port: process.env.PG_PORT
     },
     migrations: {
       tableName: "knex_migrations",
-      directory: "./src/database/migrations",
+      directory: "./src/database/migrations"
     },
     seeds: {
-      directory: "./src/database/seeds",
-    },
+      directory: "./src/database/seeds"
+    }
   },
   test: {
     client: "sqlite3",
     connection: {
-      filename: "./src/database/test.sqlite",
+      filename: "./src/database/test.sqlite"
     },
     migrations: {
       tableName: "knex_migrations",
-      directory: "./src/database/migrations",
+      directory: "./src/database/migrations"
     },
     seeds: {
-      directory: "./src/database/seeds",
+      directory: "./src/database/seeds"
     },
     useNullAsDefault: true,
     onAfterCreate: (conn, done) => {
@@ -36,7 +36,7 @@ module.exports = {
     },
     pool: {
       min: 2,
-      max: 50,
-    },
-  },
+      max: 100
+    }
+  }
 };

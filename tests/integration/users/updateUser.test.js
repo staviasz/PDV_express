@@ -5,7 +5,7 @@ const routeTest = async (body) => {
     .put("/usuario")
     .set({
       Authorization: `${global.token}`,
-      User: JSON.stringify({ id: 1 }),
+      User: JSON.stringify({ id: 1 })
     })
     .send(body);
 };
@@ -14,12 +14,12 @@ describe("Update users", () => {
   it("should is required field name", async () => {
     const response = await routeTest({
       email: "teste@teste.com",
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O campo nome é obrigatório",
+      mensagem: "O campo nome é obrigatório"
     });
   });
 
@@ -27,12 +27,12 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "",
       email: "teste@teste.com",
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O campo nome é obrigatório",
+      mensagem: "O campo nome é obrigatório"
     });
   });
 
@@ -40,12 +40,12 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: 12345,
       email: "teste@teste.com",
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O nome não deve conter numeros",
+      mensagem: "O nome não deve conter numeros"
     });
   });
 
@@ -53,12 +53,12 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "a ",
       email: "teste@teste.com",
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O nome deve conter no minimo 3 caracteres",
+      mensagem: "O nome deve conter no minimo 3 caracteres"
     });
   });
 
@@ -66,12 +66,12 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "12",
       email: "teste@teste.com",
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O nome não deve conter numeros",
+      mensagem: "O nome não deve conter numeros"
     });
   });
 
@@ -79,24 +79,24 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "teste",
       email: "testeteste.com",
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O campo email precisa ter um formato válido",
+      mensagem: "O campo email precisa ter um formato válido"
     });
   });
 
   it("should is required field email ", async () => {
     const response = await routeTest({
       nome: "teste",
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O campo email é obrigatório",
+      mensagem: "O campo email é obrigatório"
     });
   });
 
@@ -104,12 +104,12 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "teste",
       email: "",
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O campo email é obrigatório",
+      mensagem: "O campo email é obrigatório"
     });
   });
 
@@ -117,24 +117,24 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "teste",
       email: 1234,
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O email não deve conter numeros",
+      mensagem: "O email não deve conter numeros"
     });
   });
 
   it("should is required the field password", async () => {
     const response = await routeTest({
       nome: "teste",
-      email: "teste@teste.com",
+      email: "teste@teste.com"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O campo senha é obrigatório",
+      mensagem: "O campo senha é obrigatório"
     });
   });
 
@@ -142,12 +142,12 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      senha: "",
+      senha: ""
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "O campo senha é obrigatório",
+      mensagem: "O campo senha é obrigatório"
     });
   });
 
@@ -155,12 +155,12 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      senha: "12",
+      senha: "12"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "A senha deve conter entre 5 e 25 caracteres",
+      mensagem: "A senha deve conter entre 5 e 25 caracteres"
     });
   });
 
@@ -168,12 +168,12 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      senha: "12345678912345678978963254",
+      senha: "12345678912345678978963254"
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "A senha deve conter entre 5 e 25 caracteres",
+      mensagem: "A senha deve conter entre 5 e 25 caracteres"
     });
   });
 
@@ -181,12 +181,12 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      senha: 12345,
+      senha: 12345
     });
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "A senha não deve conter numeros",
+      mensagem: "A senha não deve conter numeros"
     });
   });
 
@@ -194,14 +194,14 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
       id: 1,
       nome: "teste",
-      email: "teste@teste.com",
+      email: "teste@teste.com"
     });
   });
 
@@ -209,14 +209,14 @@ describe("Update users", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      senha: "12345",
+      senha: "12345"
     });
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
       id: 1,
       nome: "teste",
-      email: "teste@teste.com",
+      email: "teste@teste.com"
     });
   });
 });

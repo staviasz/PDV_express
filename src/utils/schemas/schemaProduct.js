@@ -6,7 +6,7 @@ const schemaProduct = joi.object({
     "string.empty": "O campo descrição é obrigatório",
     "string.min": "A descrição deve conter entre 5 e 255 caracteres",
     "string.max": "A descrição deve conter entre 5 e 255 caracteres",
-    "string.base": "A descrição não deve conter numeros",
+    "string.base": "A descrição não deve conter numeros"
   }),
 
   amount: joi.number().integer().required().positive().messages({
@@ -15,7 +15,7 @@ const schemaProduct = joi.object({
     "number.positive":
       "O campo quantidade de estoque não permite numeros negativo",
     "number.integer":
-      "O campo quantidade de estoque não permite numeros com ponto flotuante",
+      "O campo quantidade de estoque não permite numeros com ponto flotuante"
   }),
 
   value: joi.number().integer().required().positive().messages({
@@ -23,7 +23,7 @@ const schemaProduct = joi.object({
     "number.base": "A valor deve conter apenas numeros",
     "number.integer":
       "O campo valor não permite numeros com ponto flotuante, digite o valor em centavos",
-    "number.positive": "O campo valor não permite numeros negativo",
+    "number.positive": "O campo valor não permite numeros negativo"
   }),
 
   category_id: joi.number().integer().positive().required().messages({
@@ -31,8 +31,8 @@ const schemaProduct = joi.object({
     "number.base": "A categoria_id deve conter apenas numeros",
     "number.positive": "O campo categoria_id não permite numeros negativo",
     "number.integer":
-      "O campo categoria_id não permite numeros com ponto flotuante",
-  }),
+      "O campo categoria_id não permite numeros com ponto flotuante"
+  })
 });
 
 module.exports = schemaProduct;

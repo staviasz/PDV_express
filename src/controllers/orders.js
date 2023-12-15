@@ -16,13 +16,13 @@ const createOrder = async (req, res) => {
     const {
       cliente_id: customer_id,
       pedido_produtos: order_products,
-      observacao: observation,
+      observacao: observation
     } = req.body;
 
     const errorOrder = await validates.validateOrder(knex, {
       customer_id,
       order_products,
-      observation,
+      observation
     });
     if (errorOrder) {
       return errorRes.errorResponse400(res, errorOrder);
@@ -32,12 +32,12 @@ const createOrder = async (req, res) => {
       .select("*")
       .whereIn(
         "id",
-        order_products.map((product) => product.produto_id),
+        order_products.map((product) => product.produto_id)
       );
 
     const amounts = order_products.map((product) => {
       const productValue = productValues.find(
-        (value) => value.id === product.produto_id,
+        (value) => value.id === product.produto_id
       );
       return productValue.valor * product.quantidade_produto;
     });
@@ -47,27 +47,27 @@ const createOrder = async (req, res) => {
       {
         cliente_id: customer_id,
         observacao: observation,
-        valor_total: totalAmount,
+        valor_total: totalAmount
       },
-      "*",
+      "*"
     );
 
     const orderProducts = order_products.map((product) => {
       const productValue = productValues.find(
-        (value) => value.id === product.produto_id,
+        (value) => value.id === product.produto_id
       );
       return {
         pedido_id: order.id,
         produto_id: product.produto_id,
         quantidade_produto: product.quantidade_produto,
-        valor_produto: productValue.valor,
+        valor_produto: productValue.valor
       };
     });
     await trx("pedido_produtos").insert(orderProducts);
 
     for (const product of order_products) {
       const currentQuantity = productValues.find(
-        (value) => value.id === product.produto_id,
+        (value) => value.id === product.produto_id
       );
       const newQuantity =
         currentQuantity.quantidade_estoque - product.quantidade_produto;
@@ -102,7 +102,7 @@ const listOrder = async (req, res) => {
         "pedido_produtos.quantidade_produto",
         "pedido_produtos.valor_produto",
         "pedido_produtos.pedido_id as produto_pedido_id",
-        "pedido_produtos.produto_id",
+        "pedido_produtos.produto_id"
       )
       .leftJoin("pedido_produtos", "pedidos.id", "pedido_produtos.pedido_id");
 
@@ -114,13 +114,13 @@ const listOrder = async (req, res) => {
     if (!orders.length) {
       return errorRes.errorResponse400(
         res,
-        `Cliente com ID ${customer_id} não foi localizado`,
+        `Cliente com ID ${customer_id} não foi localizado`
       );
     }
 
     const formattedOrders = orders.reduce((acc, order) => {
       const existingOrder = acc.find(
-        (item) => item.pedido.id === order.pedido_id,
+        (item) => item.pedido.id === order.pedido_id
       );
 
       const pedido_produto = {
@@ -128,7 +128,7 @@ const listOrder = async (req, res) => {
         quantidade_produto: order.quantidade_produto,
         valor_produto: order.valor_produto,
         pedido_id: order.produto_pedido_id,
-        produto_id: order.produto_id,
+        produto_id: order.produto_id
       };
 
       if (existingOrder) {
@@ -139,9 +139,9 @@ const listOrder = async (req, res) => {
             id: order.pedido_id,
             valor_total: order.valor_total,
             observacao: order.observacao,
-            cliente_id: order.cliente_id,
+            cliente_id: order.cliente_id
           },
-          pedido_produtos: [pedido_produto],
+          pedido_produtos: [pedido_produto]
         });
       }
 
@@ -156,5 +156,5 @@ const listOrder = async (req, res) => {
 
 module.exports = {
   createOrder,
-  listOrder,
+  listOrder
 };

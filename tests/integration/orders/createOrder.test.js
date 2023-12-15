@@ -230,6 +230,20 @@ describe("Create orders", () => {
     });
   });
 
+  it("shoud anautorized propertys unknown in array pedido_produtos", async () => {
+    const response = await routeTest({
+      cliente_id: 1,
+      pedido_produtos: [
+        { produto_id: 5, quantidade_produto: 5, propriedadeDiferente: "" },
+      ],
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      mensagem: "O objeto deve conter apenas produto_id e quantidade_produto",
+    });
+  });
+
   it("shoud not be empty field observation if sent", async () => {
     const response = await routeTest({
       cliente_id: 1,

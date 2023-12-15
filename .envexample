@@ -1,6 +1,14 @@
+
 BUCKET_KEY:005dbda4d65644a0000000001
 BUCKET_NAME:bitbarbaros
 BUCKET_APP_KEY=K005xA0Qfjrf2FQdGgBHK0axEFSIvWw
 ENDPOINT_S3='s3.us-east-005.backblazeb2.com'
 BUCKET_REGION=us-east-005
 ENDPOINT_RETURN='.s3.us-east-005.backblazeb2.com'
+
+MAIL_HOST=smtp.sendgrid.net
+MAIL_PORT=465
+MAIL_USER=apikey
+MAIL_PASS=""
+MAIL_FROM="noreply@bitbarbaros.tech"
+

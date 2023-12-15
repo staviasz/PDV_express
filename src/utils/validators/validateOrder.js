@@ -31,4 +31,13 @@ const validateOrder = async (database, { customer_id, order_products }) => {
   return;
 };
 
-module.exports = validateOrder;
+const validadeListOrder = async (customer_id) => {
+  if (isNaN(customer_id) && customer_id !== undefined) {
+    return 'O cliente_id tem que ser um número'
+  }
+}
+
+module.exports = {
+  validateOrder,
+  validadeListOrder
+};

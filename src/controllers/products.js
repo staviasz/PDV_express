@@ -164,7 +164,7 @@ const delProduct = async (req, res) => {
 
     if (product.produto_imagem) {
       const image = product.produto_imagem.replace(
-        `https://${process.env.BUCKET_NAME}${process.env.ENDPOINT_RETURN}/`,
+        `https://${process.env.BUCKET_NAME}.${process.env.ENDPOINT_S3}/`,
         ""
       );
 

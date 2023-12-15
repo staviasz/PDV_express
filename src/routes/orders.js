@@ -6,6 +6,6 @@ const verifyLogin = require("../middlewares/authenticated");
 const routes = Router();
 
 routes.use(verifyLogin);
-routes.post('/pedido', orders.createOrder);
+routes.post("/pedido", orders.createOrder);
 
 module.exports = routes;

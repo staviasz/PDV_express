@@ -47,6 +47,7 @@ describe("Get products", () => {
     const response = await routeTest();
     for (let i = 0; i < productsMock.length; i++) {
       productsMock[i].id = i + 1;
+      productsMock[i].produto_imagem = null;
     }
 
     expect(response.statusCode).toBe(200);

@@ -32,7 +32,7 @@ beforeAll(async () => {
   await knex("produtos").insert(productsMock);
 });
 
-describe("Update products", () => {
+describe("Delete products", () => {
   it("should is authorized", async () => {
     const response = await testServer.delete("/produto/1");
 
@@ -54,6 +54,7 @@ describe("Update products", () => {
     const data = await knex("produtos");
     for (let i = 0; i < productsMock.length; i++) {
       productsMock[i].id = i + 1;
+      productsMock[i].produto_imagem = null;
     }
 
     expect(data).toEqual(productsMock.slice(1));

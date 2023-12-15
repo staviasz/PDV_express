@@ -301,7 +301,7 @@ describe("Update products", () => {
     });
   });
 
-  it("should success response", async () => {
+  it("should error update product not exists", async () => {
     const mockProduct = [
       {
         categoria_id: 1,
@@ -325,18 +325,17 @@ describe("Update products", () => {
   });
 
   it("should success response", async () => {
-    const mockProduct = [
-      {
-        categoria_id: 1,
-        descricao: "produto1Update",
-        quantidade_estoque: 100,
-        valor: 100,
-      },
-    ];
+    const mockProduct = {
+      categoria_id: 1,
+      descricao: "produto1Update",
+      quantidade_estoque: 100,
+      valor: 100,
+    };
 
-    mockProduct[0].id = 1;
+    mockProduct.id = 1;
+    mockProduct.produto_imagem = null;
 
-    const response = await routeTest(mockProduct[0]);
+    const response = await routeTest(mockProduct);
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(mockProduct);

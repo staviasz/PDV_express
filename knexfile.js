@@ -34,5 +34,9 @@ module.exports = {
     onAfterCreate: (conn, done) => {
       conn.run("PRAGMA foreign_keys = ON", done);
     },
+    pool: {
+      min: 2,
+      max: 50,
+    },
   },
 };

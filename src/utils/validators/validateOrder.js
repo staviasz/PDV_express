@@ -1,12 +1,18 @@
-const schemaOrder = require('../schemas/schemaOrder');
+const schemaOrder = require("../schemas/schemaOrder");
+const validateSchema = require("./validateSchema");
 
 const validateOrder = async (database, { customer_id, order_products }) => {
-  const errorSchema = schemaOrder.validate({ customer_id, order_products });
-  if (errorSchema.error) {
-    return errorSchema.error.details[0].message;
+  const errorSchema = await validateSchema(schemaOrder)({
+    customer_id,
+    order_products,
+  });
+  if (errorSchema) {
+    return errorSchema;
   }
 
-  const clienteExist = await database("clientes").where({ id: customer_id }).first();
+  const clienteExist = await database("clientes")
+    .where({ id: customer_id })
+    .first();
   if (!clienteExist) {
     return "Cliente não encontrado";
   }
@@ -20,7 +26,10 @@ const validateOrder = async (database, { customer_id, order_products }) => {
   }
 
   for (const { produto_id, quantidade_produto } of order_products) {
-    const produtoExist = await database("produtos").where({ id: Number(produto_id) }).first(); if (!produtoExist) {
+    const produtoExist = await database("produtos")
+      .where({ id: Number(produto_id) })
+      .first();
+    if (!produtoExist) {
       return `Produto com id ${produto_id} não encontrado`;
     }
     if (produtoExist.quantidade_estoque < quantidade_produto) {

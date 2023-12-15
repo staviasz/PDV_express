@@ -5,7 +5,7 @@ const validateProduct = async (
   database,
   schemaValues,
   categoryId,
-  productId = null
+  productId = null,
 ) => {
   const errorSchema = await validateSchema(schemaProduct)(schemaValues);
   if (errorSchema) return errorSchema;

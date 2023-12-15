@@ -54,6 +54,7 @@ describe("Detail product", () => {
     });
     const [mockResponseBody] = productsMock;
     mockResponseBody.id = 1;
+    mockResponseBody.produto_imagem = null;
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(mockResponseBody);

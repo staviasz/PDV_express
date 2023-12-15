@@ -1,5 +1,0 @@
-MAIL_HOST=smtp.sendgrid.net
-MAIL_PORT=465
-MAIL_USER=apikey
-MAIL_PASS=""
-MAIL_FROM="noreply@bitbarbaros.tech"

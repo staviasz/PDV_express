@@ -10,8 +10,8 @@ const s3Client = new S3Client({
   endpoint: `https://${process.env.ENDPOINT_S3}`,
   credentials: {
     accessKeyId: process.env.BUCKET_KEY,
-    secretAccessKey: process.env.BUCKET_APP_KEY
-  }
+    secretAccessKey: process.env.BUCKET_APP_KEY,
+  },
 });
 
 const upload = async (originalname, buffer, mimetype) => {
@@ -19,7 +19,7 @@ const upload = async (originalname, buffer, mimetype) => {
     Bucket: process.env.BUCKET_NAME,
     Key: originalname,
     Body: buffer,
-    ContentType: mimetype
+    ContentType: mimetype,
   };
 
   const command = new PutObjectCommand(params);
@@ -33,7 +33,7 @@ const del = async (path) => {
     new DeleteObjectCommand({
       Bucket: process.env.BUCKET_NAME,
       Key: path,
-    })
+    }),
   );
 };
 

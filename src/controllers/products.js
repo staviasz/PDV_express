@@ -15,7 +15,7 @@ const createProduct = async (req, res) => {
     descricao: description,
     quantidade_estoque: amount,
     valor: value,
-    categoria_id: category_id
+    categoria_id: category_id,
   } = req.body;
 
   try {
@@ -25,9 +25,9 @@ const createProduct = async (req, res) => {
         description,
         amount,
         value,
-        category_id
+        category_id,
       },
-      category_id
+      category_id,
     );
     if (validProduct) {
       return errorRes.errorResponse400(res, validProduct);
@@ -45,9 +45,9 @@ const createProduct = async (req, res) => {
         valor: value,
         quantidade_estoque: amount,
         categoria_id: category_id,
-        produto_imagem: imageUrl
+        produto_imagem: imageUrl,
       },
-      "*"
+      "*",
     );
 
     return successRes.successResponse201(res, product);
@@ -63,7 +63,7 @@ const updateProduct = async (req, res) => {
     descricao: description,
     quantidade_estoque: amount,
     valor: value,
-    categoria_id: category_id
+    categoria_id: category_id,
   } = req.body;
 
   try {
@@ -73,10 +73,10 @@ const updateProduct = async (req, res) => {
         description,
         amount,
         value,
-        category_id
+        category_id,
       },
       category_id,
-      id
+      id,
     );
     if (typeof validProduct === "string") {
       return errorRes.errorResponse400(res, validProduct);
@@ -95,9 +95,9 @@ const updateProduct = async (req, res) => {
           valor: value,
           quantidade_estoque: amount,
           categoria_id: category_id,
-          produto_imagem: imageUrl
+          produto_imagem: imageUrl,
         },
-        "*"
+        "*",
       )
       .where({ id });
     return successRes.successResponse200(res, product);
@@ -132,7 +132,7 @@ const getProduct = async (req, res) => {
       if (!categoryExist) {
         return errorRes.errorResponse400(
           res,
-          "A categoria solicitada não existe"
+          "A categoria solicitada não existe",
         );
       }
       query.where({ categoria_id });
@@ -157,7 +157,7 @@ const delProduct = async (req, res) => {
     if (product.produto_imagem) {
       const image = product.produto_imagem.replace(
         `https://${process.env.BUCKET_NAME}.${process.env.ENDPOINT_S3}/`,
-        ""
+        "",
       );
 
       await del(image);
@@ -177,5 +177,5 @@ module.exports = {
   detailProduct,
 
   getProduct,
-  delProduct
+  delProduct,
 };

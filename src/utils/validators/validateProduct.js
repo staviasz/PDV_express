@@ -5,14 +5,14 @@ const validateProduct = async (
   database,
   schemaValues,
   categoryId,
-  productId = null
+  productId = null,
 ) => {
   const errorSchema = await validateSchema(schemaProduct)(schemaValues);
   if (errorSchema) return errorSchema;
 
   const queries = [
     database("categorias").where({ id: categoryId }).first(),
-    database("produtos").where({ id: productId }).first()
+    database("produtos").where({ id: productId }).first(),
   ];
   const [categoryExist, productExist] = await Promise.all(queries);
   if (!categoryExist) {

@@ -1,6 +1,7 @@
 const testServer = require("../../jest.setup");
 const path = require("path");
 const fs = require("fs");
+const axios = require("axios");
 const dbConfig = require("../../../knexfile");
 const environment = process.env.NODE_ENV || "development";
 const knex = require("knex")(dbConfig[environment]);
@@ -9,7 +10,7 @@ const routeTest = async (body) => {
   return testServer
     .put("/produto/1")
     .set({
-      Authorization: `${global.token}`
+      Authorization: `${global.token}`,
     })
     .send(body);
 };
@@ -20,20 +21,20 @@ beforeAll(async () => {
       descricao: "productJest",
       quantidade_estoque: 10,
       valor: 100,
-      categoria_id: 3
+      categoria_id: 3,
     },
     {
       descricao: "productJest2",
       quantidade_estoque: 11,
       valor: 100,
-      categoria_id: 2
+      categoria_id: 2,
     },
     {
       descricao: "productJest3",
       quantidade_estoque: 12,
       valor: 100,
-      categoria_id: 2
-    }
+      categoria_id: 2,
+    },
   ];
   await knex("produtos").insert(productsMock);
 });
@@ -43,12 +44,12 @@ describe("Update products", () => {
     const response = await testServer.put("/produto:1").send({
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
-      mensagem: "Usuario não autorizado"
+      mensagem: "Usuario não autorizado",
     });
   });
 
@@ -56,12 +57,12 @@ describe("Update products", () => {
     const response = await routeTest({
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo descrição é obrigatório"
+      mensagem: "O campo descrição é obrigatório",
     });
   });
 
@@ -70,12 +71,12 @@ describe("Update products", () => {
       descricao: "",
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo descrição é obrigatório"
+      mensagem: "O campo descrição é obrigatório",
     });
   });
 
@@ -84,12 +85,12 @@ describe("Update products", () => {
       descricao: "abcd",
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A descrição deve conter entre 5 e 255 caracteres"
+      mensagem: "A descrição deve conter entre 5 e 255 caracteres",
     });
   });
 
@@ -99,12 +100,12 @@ describe("Update products", () => {
         "abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz,abcdefghijlmnopqrstuvxz",
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A descrição deve conter entre 5 e 255 caracteres"
+      mensagem: "A descrição deve conter entre 5 e 255 caracteres",
     });
   });
 
@@ -113,12 +114,12 @@ describe("Update products", () => {
       descricao: 1000,
       quantidade_estoque: 0,
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A descrição não deve conter numeros"
+      mensagem: "A descrição não deve conter numeros",
     });
   });
 
@@ -126,12 +127,12 @@ describe("Update products", () => {
     const response = await routeTest({
       descricao: "produto1",
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo quantidade de estoque é obrigatório"
+      mensagem: "O campo quantidade de estoque é obrigatório",
     });
   });
 
@@ -140,12 +141,12 @@ describe("Update products", () => {
       descricao: "produto1",
       quantidade_estoque: "teste",
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A quantidade de estoque deve conter apenas numeros"
+      mensagem: "A quantidade de estoque deve conter apenas numeros",
     });
   });
 
@@ -154,12 +155,12 @@ describe("Update products", () => {
       descricao: "produto1",
       quantidade_estoque: -5,
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo quantidade de estoque não permite numeros negativo"
+      mensagem: "O campo quantidade de estoque não permite numeros negativo",
     });
   });
 
@@ -168,13 +169,13 @@ describe("Update products", () => {
       descricao: "produto1",
       quantidade_estoque: 5.5,
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
       mensagem:
-        "O campo quantidade de estoque não permite numeros com ponto flotuante"
+        "O campo quantidade de estoque não permite numeros com ponto flotuante",
     });
   });
 
@@ -182,12 +183,12 @@ describe("Update products", () => {
     const response = await routeTest({
       descricao: "produto1",
       quantidade_estoque: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo valor é obrigatório"
+      mensagem: "O campo valor é obrigatório",
     });
   });
 
@@ -196,12 +197,12 @@ describe("Update products", () => {
       descricao: "produto1",
       quantidade_estoque: 100,
       valor: "teste",
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A valor deve conter apenas numeros"
+      mensagem: "A valor deve conter apenas numeros",
     });
   });
 
@@ -210,12 +211,12 @@ describe("Update products", () => {
       descricao: "produto1",
       quantidade_estoque: 5,
       valor: -100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo valor não permite numeros negativo"
+      mensagem: "O campo valor não permite numeros negativo",
     });
   });
 
@@ -224,13 +225,13 @@ describe("Update products", () => {
       descricao: "produto1",
       quantidade_estoque: 5,
       valor: 100.5,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
       mensagem:
-        "O campo valor não permite numeros com ponto flotuante, digite o valor em centavos"
+        "O campo valor não permite numeros com ponto flotuante, digite o valor em centavos",
     });
   });
 
@@ -239,12 +240,12 @@ describe("Update products", () => {
       descricao: "produto1",
       quantidade_estoque: 5,
       valor: 100,
-      categoria_id: 0
+      categoria_id: 0,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo categoria_id não permite numeros negativo"
+      mensagem: "O campo categoria_id não permite numeros negativo",
     });
   });
 
@@ -253,12 +254,12 @@ describe("Update products", () => {
       descricao: "produto1",
       quantidade_estoque: 5,
       valor: 100,
-      categoria_id: 0.5
+      categoria_id: 0.5,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo categoria_id não permite numeros com ponto flotuante"
+      mensagem: "O campo categoria_id não permite numeros com ponto flotuante",
     });
   });
 
@@ -266,12 +267,12 @@ describe("Update products", () => {
     const response = await routeTest({
       descricao: "produto1",
       quantidade_estoque: 100,
-      valor: 100
+      valor: 100,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo categoria_id é obrigatório"
+      mensagem: "O campo categoria_id é obrigatório",
     });
   });
 
@@ -280,12 +281,12 @@ describe("Update products", () => {
       descricao: "produto1",
       quantidade_estoque: 100,
       valor: 100,
-      categoria_id: "a"
+      categoria_id: "a",
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A categoria_id deve conter apenas numeros"
+      mensagem: "A categoria_id deve conter apenas numeros",
     });
   });
 
@@ -294,12 +295,12 @@ describe("Update products", () => {
       descricao: "produto1",
       quantidade_estoque: 100,
       valor: 100,
-      categoria_id: 50
+      categoria_id: 50,
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A categoria não encontrada"
+      mensagem: "A categoria não encontrada",
     });
   });
 
@@ -309,14 +310,14 @@ describe("Update products", () => {
         categoria_id: 1,
         descricao: "produto1Update",
         quantidade_estoque: 100,
-        valor: 100
-      }
+        valor: 100,
+      },
     ];
 
     const response = await testServer
       .put("/produto/10")
       .set({
-        Authorization: `${global.token}`
+        Authorization: `${global.token}`,
       })
       .send(mockProduct[0]);
 
@@ -331,7 +332,7 @@ describe("Update products", () => {
       categoria_id: 1,
       descricao: "produto1Update",
       quantidade_estoque: 100,
-      valor: 100
+      valor: 100,
     };
 
     mockProduct.id = 1;
@@ -346,7 +347,7 @@ describe("Update products", () => {
   it("should success response", async () => {
     const imagePath = path.resolve(
       __dirname,
-      "../../assets/marcação de exames.jpg"
+      "../../assets/marcação de exames.jpg",
     );
     const imageBuffer = fs.readFileSync(imagePath);
     const mockProduct = {
@@ -354,26 +355,31 @@ describe("Update products", () => {
       descricao: "produto2",
       quantidade_estoque: 100,
       valor: 100,
-      categoria_id: 1
+      categoria_id: 1,
     };
 
     const response = await testServer
       .put("/produto/1")
       .set({
         Authorization: `${global.token}`,
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
       })
       .field("descricao", "produto2")
       .field("quantidade_estoque", 100)
       .field("valor", 100)
       .field("categoria_id", 1)
       .attach("produto_imagem", imageBuffer, "marcação de exames.jpg");
+
+    const imageUrl = response.body.produto_imagem;
+
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(expect.objectContaining(mockProduct));
     expect(response.body.produto_imagem).toEqual(
       expect.stringContaining(
-        "https://bitbarbaros.s3.us-east-005.backblazeb2.com/marcacao-de-exames"
-      )
+        "https://bitbarbaros.s3.us-east-005.backblazeb2.com/marcacao-de-exames",
+      ),
     );
+    const responseImage = await axios.get(imageUrl);
+    expect(responseImage.status).toBe(200);
   });
 });

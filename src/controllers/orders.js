@@ -20,7 +20,7 @@ const createOrder = async (req, res) => {
             observacao: observation,
         } = req.body;
 
-        const errorOrder = await validates.validateOrder(knex, { customer_id, order_products });
+        const errorOrder = await validates.validateOrder(knex, { customer_id, order_products, observation });
         if (errorOrder) {
             return errorRes.errorResponse400(res, errorOrder);
         };

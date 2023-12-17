@@ -1,7 +1,7 @@
 const schemaOrder = require('../schemas/schemaOrder');
 
-const validateOrder = async (database, { customer_id, order_products }) => {
-  const errorSchema = schemaOrder.validate({ customer_id, order_products });
+const validateOrder = async (database, { customer_id, order_products, observation }) => {
+  const errorSchema = schemaOrder.validate({ customer_id, order_products, observation });
   if (errorSchema.error) {
     return errorSchema.error.details[0].message;
   }

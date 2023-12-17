@@ -1,4 +1,6 @@
 const testServer = require("../../jest.setup");
+const path = require("path");
+const fs = require("fs");
 const dbConfig = require("../../../knexfile");
 const environment = process.env.NODE_ENV || "development";
 const knex = require("knex")(dbConfig[environment]);
@@ -339,5 +341,39 @@ describe("Update products", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(mockProduct);
+  });
+
+  it("should success response", async () => {
+    const imagePath = path.resolve(
+      __dirname,
+      "../../assets/marcação de exames.jpg"
+    );
+    const imageBuffer = fs.readFileSync(imagePath);
+    const mockProduct = {
+      id: 1,
+      descricao: "produto2",
+      quantidade_estoque: 100,
+      valor: 100,
+      categoria_id: 1
+    };
+
+    const response = await testServer
+      .put("/produto/1")
+      .set({
+        Authorization: `${global.token}`,
+        "Content-Type": "multipart/form-data"
+      })
+      .field("descricao", "produto2")
+      .field("quantidade_estoque", 100)
+      .field("valor", 100)
+      .field("categoria_id", 1)
+      .attach("produto_imagem", imageBuffer, "marcação de exames.jpg");
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual(expect.objectContaining(mockProduct));
+    expect(response.body.produto_imagem).toEqual(
+      expect.stringContaining(
+        "https://bitbarbaros.s3.us-east-005.backblazeb2.com/marcacao-de-exames"
+      )
+    );
   });
 });

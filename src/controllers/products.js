@@ -63,16 +63,8 @@ const updateProduct = async (req, res) => {
     descricao: description,
     quantidade_estoque: amount,
     valor: value,
-    categoria_id: category_id,
-    produto_imagem: productImage
+    categoria_id: category_id
   } = req.body;
-
-  if (productImage) {
-    return errorRes.errorResponse404(
-      res,
-      "O campo produto imagem deve receber um arquivo"
-    );
-  }
 
   try {
     const validProduct = await validates.validateProduct(

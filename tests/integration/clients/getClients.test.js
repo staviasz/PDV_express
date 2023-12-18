@@ -6,13 +6,13 @@ describe("Get Client", () => {
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
-      mensagem: "Usuario não autorizado",
+      mensagem: "Usuario não autorizado"
     });
   });
 
   it("should id associated anything account", async () => {
     const response = await testServer.get("/cliente/10").set({
-      Authorization: `${global.token}`,
+      Authorization: `${global.token}`
     });
 
     expect(response.statusCode).toBe(404);
@@ -21,7 +21,7 @@ describe("Get Client", () => {
 
   it("should get client of the id", async () => {
     const response = await testServer.get("/cliente/2").set({
-      Authorization: `${global.token}`,
+      Authorization: `${global.token}`
     });
 
     const client = global.clients[1];

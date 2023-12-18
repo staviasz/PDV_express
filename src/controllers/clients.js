@@ -16,7 +16,7 @@ const registerClient = async (req, res) => {
     numero: number,
     bairro: neighborhood,
     cidade: city,
-    estado: state,
+    estado: state
   } = req.body;
 
   try {
@@ -29,7 +29,7 @@ const registerClient = async (req, res) => {
       number,
       neighborhood,
       city,
-      state,
+      state
     });
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
@@ -44,9 +44,9 @@ const registerClient = async (req, res) => {
         numero: number,
         bairro: neighborhood,
         cidade: city,
-        estado: state,
+        estado: state
       },
-      "*",
+      "*"
     );
 
     return successRes.successResponse201(res, newClient);
@@ -65,7 +65,7 @@ const updateClient = async (req, res) => {
     numero: number,
     bairro: neighborhood,
     cidade: city,
-    estado: state,
+    estado: state
   } = req.body;
   const { id } = req.params;
 
@@ -73,7 +73,7 @@ const updateClient = async (req, res) => {
     const messageError = await validations.validateClient(
       knex,
       { name, email, cpf, zipCode, street, number, neighborhood, city, state },
-      id,
+      id
     );
     if (messageError) return errorRes.errorResponse400(res, messageError);
 
@@ -88,9 +88,9 @@ const updateClient = async (req, res) => {
         numero: number,
         bairro: neighborhood,
         cidade: city,
-        estado: state,
+        estado: state
       },
-      "*",
+      "*"
     );
 
     return successRes.successResponse200(res, newClient);

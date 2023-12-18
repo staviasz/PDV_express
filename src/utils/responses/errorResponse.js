@@ -19,5 +19,5 @@ module.exports = {
   errorResponse401,
   errorResponse403,
   errorResponse404,
-  errorResponse500,
+  errorResponse500
 };

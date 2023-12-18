@@ -6,7 +6,9 @@ const knex = require("knex")(dbConfig[environment]);
 
 const errorRes = require("../utils/responses/errorResponse");
 const successRes = require("../utils/responses/successResponse");
-const validateProduct = require("../utils/validators/validateProduct");
+const validates = require("../utils/validators/validateProduct");
+const { upload, del } = require("../configs/aws");
+const validateImage = require("../utils/validators/validateImage");
 
 const createProduct = async (req, res) => {
   const {
@@ -17,7 +19,7 @@ const createProduct = async (req, res) => {
   } = req.body;
 
   try {
-    const validProduct = await validateProduct(
+    const validProduct = await validates.validateProduct(
       knex,
       {
         description,
@@ -31,12 +33,19 @@ const createProduct = async (req, res) => {
       return errorRes.errorResponse400(res, validProduct);
     }
 
-    const product = await knex("produtos").insert(
+    let imageUrl = null;
+    if (req.file) {
+      const { mimetype, originalname, buffer } = await validateImage(req.file);
+      imageUrl = await upload(originalname, buffer, mimetype);
+    }
+
+    const [product] = await knex("produtos").insert(
       {
         descricao: description,
         valor: value,
         quantidade_estoque: amount,
         categoria_id: category_id,
+        produto_imagem: imageUrl,
       },
       "*",
     );
@@ -58,7 +67,7 @@ const updateProduct = async (req, res) => {
   } = req.body;
 
   try {
-    const validProduct = await validateProduct(
+    const validProduct = await validates.validateProduct(
       knex,
       {
         description,
@@ -73,13 +82,20 @@ const updateProduct = async (req, res) => {
       return errorRes.errorResponse400(res, validProduct);
     }
 
-    const product = await knex("produtos")
+    let imageUrl = null;
+    if (req.file) {
+      const { mimetype, originalname, buffer } = await validateImage(req.file);
+      imageUrl = await upload(originalname, buffer, mimetype);
+    }
+
+    const [product] = await knex("produtos")
       .update(
         {
           descricao: description,
           valor: value,
           quantidade_estoque: amount,
           categoria_id: category_id,
+          produto_imagem: imageUrl,
         },
         "*",
       )
@@ -133,10 +149,21 @@ const getProduct = async (req, res) => {
 const delProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const response = await knex("produtos").where({ id }).del();
-    if (!response) {
-      return errorRes.errorResponse400(res, "Produto não encontrado.");
+    const product = await validates.validateDelProduct(knex, id);
+    if (typeof product === "string") {
+      return errorRes.errorResponse400(res, product);
     }
+
+    if (product.produto_imagem) {
+      const image = product.produto_imagem.replace(
+        `https://${process.env.BUCKET_NAME}.${process.env.ENDPOINT_S3}/`,
+        "",
+      );
+
+      await del(image);
+    }
+
+    await knex("produtos").where({ id }).del();
 
     return successRes.successResponse204(res);
   } catch (error) {

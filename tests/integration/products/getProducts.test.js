@@ -8,20 +8,20 @@ const productsMock = [
     descricao: "productJest",
     quantidade_estoque: 10,
     valor: 100,
-    categoria_id: 3,
+    categoria_id: 3
   },
   {
     descricao: "productJest2",
     quantidade_estoque: 11,
     valor: 100,
-    categoria_id: 2,
+    categoria_id: 2
   },
   {
     descricao: "productJest3",
     quantidade_estoque: 12,
     valor: 100,
-    categoria_id: 2,
-  },
+    categoria_id: 2
+  }
 ];
 beforeAll(async () => {
   await knex("produtos").insert(productsMock);
@@ -29,7 +29,7 @@ beforeAll(async () => {
 
 const routeTest = async (query) => {
   return testServer.get(`/produto?${query}`).set({
-    Authorization: `${global.token}`,
+    Authorization: `${global.token}`
   });
 };
 
@@ -39,7 +39,7 @@ describe("Get products", () => {
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
-      mensagem: "Usuario não autorizado",
+      mensagem: "Usuario não autorizado"
     });
   });
 
@@ -47,6 +47,7 @@ describe("Get products", () => {
     const response = await routeTest();
     for (let i = 0; i < productsMock.length; i++) {
       productsMock[i].id = i + 1;
+      productsMock[i].produto_imagem = null;
     }
 
     expect(response.statusCode).toBe(200);
@@ -58,7 +59,7 @@ describe("Get products", () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "A categoria solicitada não existe",
+      mensagem: "A categoria solicitada não existe"
     });
   });
 

@@ -24,4 +24,20 @@ const validateProduct = async (
   return;
 };
 
-module.exports = validateProduct;
+const validateDelProduct = async (database, productId) => {
+  const orderedProduct = await database("pedido_produtos")
+    .where({ produto_id: productId })
+    .first();
+  if (orderedProduct) {
+    return "O produto está vinculado a um pedido e não pode ser excluído.";
+  }
+
+  const product = await database("produtos").where({ id: productId }).first();
+  if (!product) {
+    return "Produto não encontrado.";
+  }
+
+  return product;
+};
+
+module.exports = { validateProduct, validateDelProduct };

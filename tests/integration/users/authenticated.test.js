@@ -8,7 +8,7 @@ const routeTest = async (body) => {
     .put("/usuario")
     .set({
       Authorization: `${global.token}`,
-      User: JSON.stringify({ id: 1 }),
+      User: JSON.stringify({ id: 1 })
     })
     .send(body);
 };
@@ -19,7 +19,7 @@ describe("Authenticated users", () => {
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
-      mensagem: "Usuario não autorizado",
+      mensagem: "Usuario não autorizado"
     });
   });
 
@@ -29,7 +29,7 @@ describe("Authenticated users", () => {
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "Usuario não encontrado",
+      mensagem: "Usuario não encontrado"
     });
   });
 });

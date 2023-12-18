@@ -10,6 +10,16 @@ const validateProduct = async (
   const errorSchema = await validateSchema(schemaProduct)(schemaValues);
   if (errorSchema) return errorSchema;
 
+  const existingProduct = await database("produtos")
+  .where({
+    descricao: schemaValues.description,
+  })
+  .first();
+
+if (existingProduct) {
+  return "Um produto com a mesma descrição já está cadastrado.";
+}
+
   const queries = [
     database("categorias").where({ id: categoryId }).first(),
     database("produtos").where({ id: productId }).first(),

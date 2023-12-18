@@ -33,7 +33,7 @@ const del = async (path) => {
     new DeleteObjectCommand({
       Bucket: process.env.BUCKET_NAME,
       Key: path,
-    })
+    }),
   );
 };
 

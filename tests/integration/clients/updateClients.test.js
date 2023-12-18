@@ -4,7 +4,7 @@ const routeTest = async (body) => {
   return testServer
     .put("/cliente/1")
     .set({
-      Authorization: `${global.token}`,
+      Authorization: `${global.token}`
     })
     .send(body);
 };
@@ -19,7 +19,7 @@ describe("Create clients", () => {
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
-      mensagem: "Usuario não autorizado",
+      mensagem: "Usuario não autorizado"
     });
   });
 
@@ -28,120 +28,120 @@ describe("Create clients", () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo nome é obrigatório",
+      mensagem: "O campo nome é obrigatório"
     });
   });
 
   it("should not is empty field nome", async () => {
     const response = await routeTest({
-      nome: "",
+      nome: ""
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo nome é obrigatório",
+      mensagem: "O campo nome é obrigatório"
     });
   });
 
   it("should not is number field nome", async () => {
     const response = await routeTest({
-      nome: 123,
+      nome: 123
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O nome não deve conter numeros",
+      mensagem: "O nome não deve conter numeros"
     });
   });
 
   it("should not is caracteres numerics field nome", async () => {
     const response = await routeTest({
-      nome: "123",
+      nome: "123"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O nome não deve conter numeros",
+      mensagem: "O nome não deve conter numeros"
     });
   });
 
   it("should minimum 3 caracteres field nome", async () => {
     const response = await routeTest({
-      nome: "ab",
+      nome: "ab"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O nome deve conter no minimo 3 caracteres",
+      mensagem: "O nome deve conter no minimo 3 caracteres"
     });
   });
 
   it("should maximum 255 caracteres field nome", async () => {
     const response = await routeTest({
-      nome: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      nome: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O nome deve conter no maximo 255 caracteres",
+      mensagem: "O nome deve conter no maximo 255 caracteres"
     });
   });
 
   it("should is required field email", async () => {
     const response = await routeTest({
-      nome: "teste",
+      nome: "teste"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo email é obrigatório",
+      mensagem: "O campo email é obrigatório"
     });
   });
 
   it("should not is empty field email", async () => {
     const response = await routeTest({
-      nome: "teste",
+      nome: "teste"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo email é obrigatório",
+      mensagem: "O campo email é obrigatório"
     });
   });
 
   it("should not is number field email", async () => {
     const response = await routeTest({
       nome: "teste",
-      email: 123,
+      email: 123
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O email não deve conter numeros",
+      mensagem: "O email não deve conter numeros"
     });
   });
 
   it("should valid format field email", async () => {
     const response = await routeTest({
       nome: "teste",
-      email: "testeteste.com",
+      email: "testeteste.com"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo email precisa ter um formato válido",
+      mensagem: "O campo email precisa ter um formato válido"
     });
   });
 
   it("should is required field cpf", async () => {
     const response = await routeTest({
       nome: "teste",
-      email: "teste@teste.com",
+      email: "teste@teste.com"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo CPF é obrigatório",
+      mensagem: "O campo CPF é obrigatório"
     });
   });
 
@@ -149,12 +149,12 @@ describe("Create clients", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      cpf: "",
+      cpf: ""
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo CPF é obrigatório",
+      mensagem: "O campo CPF é obrigatório"
     });
   });
 
@@ -162,12 +162,12 @@ describe("Create clients", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      cpf: 123,
+      cpf: 123
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O CPF não deve conter numeros",
+      mensagem: "O CPF não deve conter numeros"
     });
   });
 
@@ -175,12 +175,12 @@ describe("Create clients", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      cpf: "1234567890",
+      cpf: "1234567890"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O CPF deve conter no minimo 11 caracteres",
+      mensagem: "O CPF deve conter no minimo 11 caracteres"
     });
   });
 
@@ -188,12 +188,12 @@ describe("Create clients", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      cpf: "123456789012345",
+      cpf: "123456789012345"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O CPF deve conter no maximo 14 caracteres",
+      mensagem: "O CPF deve conter no maximo 14 caracteres"
     });
   });
 
@@ -201,12 +201,12 @@ describe("Create clients", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      cpf: "a1234567890",
+      cpf: "a1234567890"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O CPF permite apenas digitos, (.) e (-)",
+      mensagem: "O CPF permite apenas digitos, (.) e (-)"
     });
   });
 
@@ -214,12 +214,12 @@ describe("Create clients", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      cpf: "*1234567890",
+      cpf: "*1234567890"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O CPF permite apenas digitos, (.) e (-)",
+      mensagem: "O CPF permite apenas digitos, (.) e (-)"
     });
   });
 
@@ -227,11 +227,11 @@ describe("Create clients", () => {
     const response = await routeTest({
       nome: "teste",
       email: "teste@teste.com",
-      cpf: "11234567890",
+      cpf: "11234567890"
     });
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "CPF inválido",
+      mensagem: "CPF inválido"
     });
   });
 
@@ -240,12 +240,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "12345678910",
-      cep: "",
+      cep: ""
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo CEP não pode estar vazio",
+      mensagem: "O campo CEP não pode estar vazio"
     });
   });
 
@@ -254,12 +254,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "12345678900",
-      cep: "1234567",
+      cep: "1234567"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O CEP deve ter exatamente 8 dígitos",
+      mensagem: "O CEP deve ter exatamente 8 dígitos"
     });
   });
 
@@ -268,12 +268,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "12345678901",
-      cep: "123456789",
+      cep: "123456789"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O CEP deve ter exatamente 8 dígitos",
+      mensagem: "O CEP deve ter exatamente 8 dígitos"
     });
   });
 
@@ -282,12 +282,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      cep: "-1234567",
+      cep: "-1234567"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O CEP deve conter apenas números",
+      mensagem: "O CEP deve conter apenas números"
     });
   });
 
@@ -296,12 +296,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "10234567890",
-      cep: "*1234567",
+      cep: "*1234567"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O CEP deve conter apenas números",
+      mensagem: "O CEP deve conter apenas números"
     });
   });
 
@@ -310,12 +310,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "10234567890",
-      cep: 12345678,
+      cep: 12345678
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O CEP não deve conter numeros",
+      mensagem: "O CEP não deve conter numeros"
     });
   });
 
@@ -324,12 +324,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      rua: "",
+      rua: ""
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo rua não pode estar vazio",
+      mensagem: "O campo rua não pode estar vazio"
     });
   });
 
@@ -338,12 +338,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "10234567890",
-      rua: "abcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxz",
+      rua: "abcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxzabcdefghihlmnopqrstuvxz"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo rua deve conter no maximo 255 caracteres",
+      mensagem: "O campo rua deve conter no maximo 255 caracteres"
     });
   });
 
@@ -352,12 +352,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "10234567890",
-      rua: 12345678,
+      rua: 12345678
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo rua não deve conter numeros",
+      mensagem: "O campo rua não deve conter numeros"
     });
   });
 
@@ -366,12 +366,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      numero: "",
+      numero: ""
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo numero não pode estar vazio",
+      mensagem: "O campo numero não pode estar vazio"
     });
   });
 
@@ -380,12 +380,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "10234567890",
-      numero: "123456789123456789123456789",
+      numero: "123456789123456789123456789"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo numero deve conter no maximo 20 caracteres",
+      mensagem: "O campo numero deve conter no maximo 20 caracteres"
     });
   });
 
@@ -394,12 +394,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "10234567890",
-      numero: 12345678,
+      numero: 12345678
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo numero deve ser uma string",
+      mensagem: "O campo numero deve ser uma string"
     });
   });
 
@@ -408,12 +408,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      numero: "abcdefghihlmnopqrstuvxz",
+      numero: "abcdefghihlmnopqrstuvxz"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O numero deve conter apenas digitos",
+      mensagem: "O numero deve conter apenas digitos"
     });
   });
 
@@ -422,12 +422,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      numero: "-*/)",
+      numero: "-*/)"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O numero deve conter apenas digitos",
+      mensagem: "O numero deve conter apenas digitos"
     });
   });
 
@@ -436,12 +436,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      bairro: "",
+      bairro: ""
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo bairro não pode estar vazio",
+      mensagem: "O campo bairro não pode estar vazio"
     });
   });
 
@@ -451,12 +451,12 @@ describe("Create clients", () => {
       email: "teste@teste.com",
       cpf: "10234567890",
       bairro:
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo bairro deve conter no maximo 255 caracteres",
+      mensagem: "O campo bairro deve conter no maximo 255 caracteres"
     });
   });
 
@@ -465,12 +465,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "10234567890",
-      bairro: 12345678,
+      bairro: 12345678
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo bairro deve ser uma string",
+      mensagem: "O campo bairro deve ser uma string"
     });
   });
 
@@ -479,12 +479,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      cidade: "",
+      cidade: ""
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo cidade não pode estar vazio",
+      mensagem: "O campo cidade não pode estar vazio"
     });
   });
 
@@ -494,12 +494,12 @@ describe("Create clients", () => {
       email: "teste@teste.com",
       cpf: "10234567890",
       cidade:
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo cidade deve conter no maximo 255 caracteres",
+      mensagem: "O campo cidade deve conter no maximo 255 caracteres"
     });
   });
 
@@ -508,12 +508,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "10234567890",
-      cidade: 12345678,
+      cidade: 12345678
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo cidade deve ser uma string",
+      mensagem: "O campo cidade deve ser uma string"
     });
   });
 
@@ -522,12 +522,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      cidade: "*/+~-",
+      cidade: "*/+~-"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo cidade não aceita digitos e caracteres especiais",
+      mensagem: "O campo cidade não aceita digitos e caracteres especiais"
     });
   });
 
@@ -536,12 +536,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      cidade: "02989498",
+      cidade: "02989498"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo cidade não aceita digitos e caracteres especiais",
+      mensagem: "O campo cidade não aceita digitos e caracteres especiais"
     });
   });
 
@@ -550,12 +550,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      estado: "",
+      estado: ""
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo estado não pode estar vazio",
+      mensagem: "O campo estado não pode estar vazio"
     });
   });
 
@@ -565,12 +565,12 @@ describe("Create clients", () => {
       email: "teste@teste.com",
       cpf: "10234567890",
       estado:
-        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo estado deve conter no maximo 255 caracteres",
+      mensagem: "O campo estado deve conter no maximo 255 caracteres"
     });
   });
 
@@ -579,12 +579,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "10234567890",
-      estado: 12345678,
+      estado: 12345678
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo estado deve ser uma string",
+      mensagem: "O campo estado deve ser uma string"
     });
   });
 
@@ -593,12 +593,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      estado: "*/+~-",
+      estado: "*/+~-"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo estado não aceita digitos e caracteres especiais",
+      mensagem: "O campo estado não aceita digitos e caracteres especiais"
     });
   });
 
@@ -607,12 +607,12 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste@teste.com",
       cpf: "01234567890",
-      estado: "02989498",
+      estado: "02989498"
     });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
-      mensagem: "O campo estado não aceita digitos e caracteres especiais",
+      mensagem: "O campo estado não aceita digitos e caracteres especiais"
     });
   });
 
@@ -620,12 +620,12 @@ describe("Create clients", () => {
     const response = await testServer
       .put("/cliente/10")
       .set({
-        Authorization: `${global.token}`,
+        Authorization: `${global.token}`
       })
       .send({
         nome: "teste",
         email: "teste@teste.com",
-        cpf: "01234567890",
+        cpf: "01234567890"
       });
 
     expect(response.statusCode).toBe(400);
@@ -654,7 +654,7 @@ describe("Create clients", () => {
     const userMock = {
       nome: "teste",
       email: "teste@teste.com",
-      cpf: "0123456789-0",
+      cpf: "0123456789-0"
     };
 
     const cleanCpf = userMock.cpf.replace(/\D/g, "");
@@ -668,7 +668,7 @@ describe("Create clients", () => {
       numero: null,
       bairro: null,
       cidade: null,
-      estado: null,
+      estado: null
     };
 
     expect(response.statusCode).toBe(200);
@@ -680,7 +680,7 @@ describe("Create clients", () => {
       nome: "teste",
       email: "teste1@teste.com",
       cpf: "01234567890",
-      cep: "12345678",
+      cep: "12345678"
     };
 
     const response = await routeTest(userMock);
@@ -691,7 +691,7 @@ describe("Create clients", () => {
       numero: null,
       bairro: null,
       cidade: null,
-      estado: null,
+      estado: null
     };
 
     expect(response.statusCode).toBe(200);
@@ -704,7 +704,7 @@ describe("Create clients", () => {
       email: "teste1@teste.com",
       cpf: "01234567890",
       cep: "12345678",
-      rua: "Rio de janeiro",
+      rua: "Rio de janeiro"
     };
     const response = await routeTest(userMock);
     const responseBody = {
@@ -713,7 +713,7 @@ describe("Create clients", () => {
       numero: null,
       bairro: null,
       cidade: null,
-      estado: null,
+      estado: null
     };
 
     expect(response.statusCode).toBe(200);
@@ -727,7 +727,7 @@ describe("Create clients", () => {
       cpf: "012.345.678-90",
       cep: "12345678",
       rua: "Rio de janeiro",
-      numero: "123",
+      numero: "123"
     };
     const response = await routeTest(userMock);
     const responseBody = {
@@ -736,7 +736,7 @@ describe("Create clients", () => {
       cpf: formatCpf(userMock.cpf),
       bairro: null,
       cidade: null,
-      estado: null,
+      estado: null
     };
 
     expect(response.statusCode).toBe(200);
@@ -751,14 +751,14 @@ describe("Create clients", () => {
       cep: "12345678",
       rua: "Rio de janeiro",
       numero: "123",
-      bairro: "bairo de teste",
+      bairro: "bairo de teste"
     };
     const response = await routeTest(userMock);
     const responseBody = {
       id: 1,
       ...userMock,
       cidade: null,
-      estado: null,
+      estado: null
     };
 
     expect(response.statusCode).toBe(200);
@@ -774,13 +774,13 @@ describe("Create clients", () => {
       rua: "Rio de janeiro",
       numero: "123",
       bairro: "bairo de teste",
-      cidade: "salvador",
+      cidade: "salvador"
     };
     const response = await routeTest(userMock);
     const responseBody = {
       id: 1,
       ...userMock,
-      estado: null,
+      estado: null
     };
 
     expect(response.statusCode).toBe(200);
@@ -797,12 +797,12 @@ describe("Create clients", () => {
       numero: "123",
       bairro: "bairo de teste",
       cidade: "salvador",
-      estado: "bahia",
+      estado: "bahia"
     };
     const response = await routeTest(userMock);
     const responseBody = {
       id: 1,
-      ...userMock,
+      ...userMock
     };
 
     expect(response.statusCode).toBe(200);

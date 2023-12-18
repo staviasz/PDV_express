@@ -23,9 +23,9 @@ const createUser = async (req, res) => {
       {
         nome: name,
         email,
-        senha: hashedPassword,
+        senha: hashedPassword
       },
-      "*",
+      "*"
     );
 
     // eslint-disable-next-line no-unused-vars
@@ -44,7 +44,7 @@ const updateUser = async (req, res) => {
     const messageError = await validateUser(
       knex,
       { name, email, password },
-      id,
+      id
     );
     if (messageError) return errorRes.errorResponse404(res, messageError);
 
@@ -88,7 +88,7 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign({ id: existsUser.id }, process.env.SECRET_JWT, {
-      expiresIn: "8h",
+      expiresIn: "8h"
     });
 
     // eslint-disable-next-line no-unused-vars
@@ -96,7 +96,7 @@ const login = async (req, res) => {
 
     return successRes.successResponse200(res, {
       usuario: user,
-      token,
+      token
     });
   } catch (error) {
     return errorRes.errorResponse500(res, error.message);
@@ -107,5 +107,5 @@ module.exports = {
   createUser,
   updateUser,
   detailsUser,
-  login,
+  login
 };

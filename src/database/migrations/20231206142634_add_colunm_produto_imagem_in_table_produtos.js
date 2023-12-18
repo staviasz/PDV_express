@@ -5,7 +5,7 @@
 exports.up = async function (knex) {
   const colunmExists = await knex.schema.hasColumn(
     "produtos",
-    "produto_imagem",
+    "produto_imagem"
   );
 
   if (!colunmExists) {
@@ -22,7 +22,7 @@ exports.up = async function (knex) {
 exports.down = async function (knex) {
   const columnExists = await knex.schema.hasColumn(
     "produtos",
-    "produto_imagem",
+    "produto_imagem"
   );
 
   if (columnExists) {

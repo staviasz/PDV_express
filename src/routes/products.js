@@ -11,12 +11,12 @@ routes.get("/produto", products.getProduct);
 routes.post(
   "/produto",
   multer.single("produto_imagem"),
-  products.createProduct,
+  products.createProduct
 );
 routes.put(
   "/produto/:id",
   multer.single("produto_imagem"),
-  products.updateProduct,
+  products.updateProduct
 );
 routes.get("/produto/:id", products.detailProduct);
 routes.get("/produto", products.getProduct);

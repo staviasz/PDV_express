@@ -17,7 +17,7 @@ const validateImage = async (file) => {
     fieldname,
     mimetype,
     originalname: slug,
-    buffer: imageResize,
+    buffer: imageResize
   };
 };
 

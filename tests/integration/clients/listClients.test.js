@@ -6,13 +6,13 @@ describe("List Client", () => {
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({
-      mensagem: "Usuario não autorizado",
+      mensagem: "Usuario não autorizado"
     });
   });
 
   it("should success response", async () => {
     const response = await testServer.get("/cliente").set({
-      Authorization: `${global.token}`,
+      Authorization: `${global.token}`
     });
 
     const [clientOne, clientTwo] = global.clients;
@@ -25,12 +25,12 @@ describe("List Client", () => {
         numero: null,
         bairro: null,
         cidade: null,
-        estado: null,
+        estado: null
       },
       {
         id: 2,
-        ...clientTwo,
-      },
+        ...clientTwo
+      }
     ];
 
     expect(response.statusCode).toBe(200);

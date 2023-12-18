@@ -32,30 +32,12 @@ const sendMail = async (order, orderProducts, productValue) => {
         house_number: customer.numero,
         state: customer.estado,
         neighborhood: customer.bairro
-
     };
-  });
 
-  const context = {
-    name_client: customer.nome,
-    order_id: order.id,
-    products,
-    total: (order.valor_total / 100).toFixed(2),
-    zip_code: customer.cep,
-    road: customer.rua,
-    city: customer.cidade,
-    house_number: customer.numero,
-    state: customer.estado,
-    neighborhood: customer.bairro
-  };
+    const html = await email.compiladorHtml('./src/utils/templates/createOrder.html', context)
+    const to = customer.email
 
-  const html = await email.compiladorHtml(
-    "./src/utils/templates/createOrder.html",
-    context
-  );
-  const to = customer.email;
-
-  email.send(to, html, order.id);
-};
+    email.send(to, html, order.id)
+}
 
 module.exports = sendMail;
